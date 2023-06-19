@@ -50,9 +50,10 @@ const handleSubmit = async (e) =>{
     
     <form style={{display:'grid',alignContent:'center', justifyContent:'center'}}
     onSubmit={handleSubmit}>
-      {/* <label style={{marginRight:'5px'}} htmlFor='title'>title</label> */}
+      <label style={{margin:'auto auto 7px 0px'}} htmlFor='title'>Title</label>
      
-      <input
+      <input 
+      
       type='text'
       id='title'
       value={title}
@@ -67,6 +68,7 @@ const handleSubmit = async (e) =>{
         {/* {item.name}
         {item.gender}
         {item.status} */}
+        <h3>{item.autor}</h3>
         -{item.title}</div>
     ))}
     
