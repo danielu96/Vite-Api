@@ -3,6 +3,7 @@ import {  useEffect,useState } from 'react'
 import Wrapper from './assets/wrappers/App'
 import { ToastContainer, toast } from 'react-toastify';
   import 'react-toastify/dist/ReactToastify.css';
+import SingleItem from './SingleItem';
  
 function App() {
   const [data, setData] = useState([]);
@@ -39,10 +40,12 @@ const handleSubmit = async (e) =>{
   try{
     const resp = await axios.post(localData, {title:title});
     console.log(resp.data);
-   toast.success('Super gut');
+   toast.success('Super gut'); 
+  
     return resp.data;
   } catch(error){
-    console.log(error.response)
+    console.log(error.response);
+    toast.warn('sehr schlecht');
   }
   
 }
@@ -62,25 +65,29 @@ const handleSubmit = async (e) =>{
       <label style={{margin:'auto auto 7px 0px'}} htmlFor='title'>Title</label>
      
       <input 
-      style={{background:'#f7f7f7'}}
+      style={{background:'#f7f7f7',border:'solid 1px',borderRadius:"5px"}}
       type='text'
       id='title'
       value={title}
       onChange={(e)=>setTitle( e.target.value)}
-      ></input>
+      ></input>  
+      
+    
    <button onClick={handleSubmit}>check it</button>
     </form>
     </div>
     
-    {data.map((item,id)=>(
+    {data    
+    .map((item,id)=>(
       <div key={id}>
+        <SingleItem title={item.title} autor={item.autor} />
         {/* {item.name}
         {item.gender}
         {item.status} */}
-        <h3>{item.autor}</h3>
-        -{item.title}</div>
-    ))}
-    
+        {/* <h3>{item.autor}</h3>
+        -{item.title} */}
+        </div>
+    ))}   
    
     </div>      
       </Wrapper>
