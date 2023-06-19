@@ -1,6 +1,8 @@
 import axios from 'axios';
 import {  useEffect,useState } from 'react'
 import Wrapper from './assets/wrappers/App'
+import { ToastContainer, toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
  
 function App() {
   const [data, setData] = useState([]);
@@ -36,16 +38,23 @@ const handleSubmit = async (e) =>{
   e.preventDefault();
   try{
     const resp = await axios.post(localData, {title:title});
-    console.log(resp.data)
-    // return resp.data;
+    console.log(resp.data);
+   toast.success('Super gut');
+    return resp.data;
   } catch(error){
     console.log(error.response)
   }
+  
 }
   return (
         <Wrapper>
+         
     <div>
+    <ToastContainer 
+    position="top-center"
+    />
     <h1>API </h1>
+    
     <div className='container'>
     
     <form style={{display:'grid',alignContent:'center', justifyContent:'center'}}
@@ -53,13 +62,13 @@ const handleSubmit = async (e) =>{
       <label style={{margin:'auto auto 7px 0px'}} htmlFor='title'>Title</label>
      
       <input 
-      
+      style={{background:'#f7f7f7'}}
       type='text'
       id='title'
       value={title}
       onChange={(e)=>setTitle( e.target.value)}
       ></input>
-   <button>check</button>
+   <button onClick={handleSubmit}>check it</button>
     </form>
     </div>
     

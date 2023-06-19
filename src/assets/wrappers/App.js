@@ -18,6 +18,7 @@ button{
 button:hover{
   color:white;
   background:black;
+  transition:1s;
 }
 .container{
   display:grid;
