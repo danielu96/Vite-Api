@@ -29,10 +29,12 @@ button:hover{
   border:solid 1px gray;
   border-radius:10px;
   margin-bottom:2rem;
+  box-shadow: 11px 14px 24px -18px rgba(66, 68, 90, 1);
 
 }
 .container:hover{
-  box-shadow: 2px 2px 2px 2px gray;
+
+  box-shadow: 15px 16px 28px -18px rgba(66, 68, 90, 1);
 transition:1s;
 
 }
