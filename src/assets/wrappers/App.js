@@ -10,7 +10,7 @@ justify-items:center;
 button{
   width:4rem;
   color:black;
-  margin:3rem auto auto ;
+  margin:1rem auto auto ;
   background:white;
   border-radius:5px;
 
