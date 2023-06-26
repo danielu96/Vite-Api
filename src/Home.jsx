@@ -6,12 +6,13 @@ import NavBar from './NavBar'
 const Home = () => {
   return (
     <>
-    <Wrapper>
-    <div>
+  
 <NavBar/>
-<Outlet/>
-    </div>
-    </Wrapper>
+<Wrapper>
+<Outlet />
+</Wrapper>
+  
+   
     </>
   )
 }
