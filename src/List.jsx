@@ -6,13 +6,15 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
 import axios from 'axios';
 import SingleItem from './SingleItem';
-import NavBar from './NavBar';
+
 
 const Home = () => {
     const [data, setData] = useState([]);
     const [title , setTitle] = useState('');  
     const [autor , setAutor] = useState('');  
-    const url = "https://rickandmortyapi.com/api/character/1,10,15";
+    // const url = "https://rickandmortyapi.com/api/character/1,10,15";
+ 
+ 
   const localData = "../DATA/data.json" ;
 const fetchData = async () =>{
   try{
@@ -30,8 +32,6 @@ useEffect(() => {
   fetchData();
 }, [])
 
-
-
    const handleSubmit = async (e) =>{
     e.preventDefault();
     try{
@@ -48,16 +48,14 @@ useEffect(() => {
     } catch(error){
       console.log(error.response);
       toast.warn('sehr schlecht');
-    }
-    
+    }    
   }
 
 
   return (
     <>
-    <Wrapper>
-      
-     
+    <Wrapper>   
+    
     <ToastContainer 
      position="top-center"
      />
@@ -80,22 +78,18 @@ useEffect(() => {
       id='autor'
       value={autor}
       onChange={(e)=>setAutor( e.target.value)}
-      ></input> 
-     
-    
-      
+      ></input>    
+          
    <button onClick={handleSubmit}>check it</button>
-     </form>
-          <Link  
-         to='/Item'
-        //  {`/Item/${title}`} 
-          > Zobacz</Link>
-    </div>
-   {data.map((item,id)=>(
-       <div key={id}>
-         <SingleItem title={item.title} autor={item.autor} />      
+     </form>      
+    </div>    
+    {data.map((item,id)=>(
+         <div key={id}>  
+    <SingleItem title={item.title}/>
+       
         </div>
-     ))}    
+      ))}    
+    
     </Wrapper>
     </>
   )
