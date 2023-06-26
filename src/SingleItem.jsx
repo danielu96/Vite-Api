@@ -1,19 +1,22 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import Wrapper from './assets/wrappers/App'
 
-const SingleItem = ({autor,title}) => {
-  // const {title}=useParams();
+const SingleItem = ({title,autor}) => {
+ 
   return (
-    <div style={{display:'flex',justifyContent:'space-between'}}>
-        <h1>{title}</h1>
-        <p>{autor}</p>
-     {/* <a href='Item' >  <button >details</button> </a> */}
+    
+    <div style={{width:'30vw',display:'flex',justifyContent:'space-between'}}>
+      
+        <h4>{title}</h4>
         <Link  
-        to='/Item'
-        //  to={`/Item/${title}`} 
+        // to='/Item'
+         to={`/Item/${title}`} 
           > Zobacz</Link>
+       
 
     </div>
+    
   )
 }
 
