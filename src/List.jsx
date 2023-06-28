@@ -8,7 +8,7 @@ import axios from 'axios';
 import SingleItem from './SingleItem';
 
 
-const Home = () => {
+const List = () => {
     const [data, setData] = useState([]);
     const [title , setTitle] = useState('');  
     const [autor , setAutor] = useState('');  
@@ -95,4 +95,4 @@ useEffect(() => {
   )
 }
 
-export default Home
+export default List
