@@ -18,7 +18,7 @@ const singleToDoQuery = (id) => {
   export const loader =
     (queryClient) =>
     async ({ params }) => {
-      const { id } = params;
+      const { id} = params;
       await queryClient.ensureQueryData(singleToDoQuery(id));
       return { id };
     };
@@ -29,13 +29,13 @@ const { data } = useQuery(singleToDoQuery(id));
 const singleToDo = data.items[0];
 const {
   
-    title:title,
+    title:name,
     autor:autor,
    
   } = singleToDo;
   return (
     <div>ToDo
-        {id}
+        {name}
     </div>
   )
 }
