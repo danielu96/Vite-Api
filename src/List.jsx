@@ -1,11 +1,15 @@
 import React from 'react'
-import { Link, Outlet } from 'react-router-dom'
+// import { Link, Outlet } from 'react-router-dom'
 import {  useEffect,useState } from 'react'
 import Wrapper from './assets/wrappers/App'
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
+import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import SingleItem from './SingleItem';
+import {nanoid} from 'nanoid';
+// import Items from './Items';
+
 
 
 const List = () => {
@@ -14,8 +18,20 @@ const List = () => {
     const [autor , setAutor] = useState('');  
     // const url = "https://rickandmortyapi.com/api/character/1,10,15";
  
+    const customFetch = axios.create({
+      baseURL: 
+      // "../DATA/data.json" 
+      'http://localhost:5173/DATA/data.json'
+      ,
+    });
+    
  
-  const localData = "../DATA/data.json" ;
+  const localData =
+  // "../DATA/data.json" ;
+  "http://localhost:5173/DATA/data.json";
+  // 'http://localhost:5173/api/items'
+  // 'http://localhost:5173/DATA/data.json'
+  
 const fetchData = async () =>{
   try{
     const response = await axios(localData
@@ -31,24 +47,34 @@ const fetchData = async () =>{
 useEffect(() => {
   fetchData();
 }, [])
+const {mutate:createTask}=useMutation({
+  mutationFn:()=> customFetch.post('/',{title:title,autor:autor,id:nanoid()}),
+
+});
+
+
+
+
 
    const handleSubmit = async (e) =>{
     e.preventDefault();
-    try{
-      const resp = await axios.post (localData, {id:'4',title:title,autor:autor});
-    //  setData = JSON.stringify
-    const myJSON = JSON.stringify(resp);
-      // const resp =JSON.stringify({
-      //   id:'4',title:title,autor:autor
-      //   }),
-      console.log(resp.data);
-     toast.success('Super gut'); 
-    //  setData(resp.data);
-      return myJSON;
-    } catch(error){
-      console.log(error.response);
-      toast.warn('sehr schlecht');
-    }    
+    createTask();
+    // try{
+    //   const resp = await axios.post (localData, {id:'4',title:title,autor:autor});
+    // //  setData = JSON.stringify
+    // const myJSON = JSON.stringify(resp);
+    //   // const resp =JSON.stringify({
+    //   //   id:'4',title:title,autor:autor
+    //   //   }),
+    //   console.log(resp.data);
+    //  toast.success('Super gut'); 
+    // //  setData(resp.data);
+    //   return myJSON;
+    // } catch(error){
+    //   console.log(error.response);
+    //   toast.warn('sehr schlecht');
+    // } 
+      // return (createTask)     
   }
 
 
