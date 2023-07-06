@@ -9,7 +9,10 @@ const localData =
 
 export const loader = async ()=>{
     // const searchTerm="";
-    const response= await axios.get(`${localData}`);
+    const response= await axios.get   (`${localData}`)
+   
+   
+    ;
     console.log(response)
     return {items:response.data.asks}
   };
