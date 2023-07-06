@@ -14,6 +14,8 @@ import CoctailList from "./CoctailList";
 import Coctail from "./Coctail";
 import Todos from "./Pages/Todos";
 import ToDo from "./Pages/ToDo";
+import Api from "./Pages/Api";
+
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -68,7 +70,12 @@ const router = createBrowserRouter([
         element: <Coctail/>   , 
           loader:SingleCoctaiLoader(queryClient),
         
-      }
+      },   
+      {
+        path:'Api',
+        element:<Api/>
+      },
+     
     ]
   },
  
