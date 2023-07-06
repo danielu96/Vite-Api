@@ -4,9 +4,9 @@ import {  useEffect,useState } from 'react'
 import Wrapper from './assets/wrappers/App'
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation,useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import SingleItem from './SingleItem';
+import Single from './Single';
 import {nanoid} from 'nanoid';
 // import Items from './Items';
 
@@ -17,27 +17,39 @@ const List = () => {
     const [title , setTitle] = useState('');  
     const [autor , setAutor] = useState('');  
     // const url = "https://rickandmortyapi.com/api/character/1,10,15";
+
+    //  const useFetchTasks = () => {
+    //   const {  data } = useQuery({
+    //     queryKey: ['tasks'],
+    //     queryFn: async () => {
+    //       const { data } = await customFetch.get('/');
+    //       return data;
+    //     },
+    //   });
+    //   return {  data };
+    // }; 
  
     const customFetch = axios.create({
       baseURL: 
       // "../DATA/data.json" 
-      'http://localhost:5173/DATA/data.json'
+      // 'http://localhost:5000/api/tasks'
+      'http://localhost:5173/DATA/db.json'
       ,
     });
     
  
   const localData =
   // "../DATA/data.json" ;
-  "http://localhost:5173/DATA/data.json";
+  // "http://localhost:5000/api/tasks";
   // 'http://localhost:5173/api/items'
-  // 'http://localhost:5173/DATA/data.json'
-  
+  'http://localhost:5173/DATA/db.json'
+
 const fetchData = async () =>{
   try{
     const response = await axios(localData
     
       );
-    const data= response.data;
+    const data= response.data.asks;
  setData(data)
     // console.log(data);
   } catch (error) {
@@ -45,10 +57,14 @@ const fetchData = async () =>{
   }
 }
 useEffect(() => {
-  fetchData();
+  fetchData(); 
 }, [])
 const {mutate:createTask}=useMutation({
-  mutationFn:()=> customFetch.post('/',{title:title,autor:autor,id:nanoid()}),
+  mutationFn:()=> customFetch.post('/', 
+  // {body: JSON.stringify(data)},
+  {body:{title:title,autor:autor,id:nanoid()}}
+  // {data:{title:title,autor:autor}}
+  ),
 
 });
 
@@ -111,7 +127,7 @@ const {mutate:createTask}=useMutation({
     </div>    
     {data.map((item,id)=>(
          <div key={id}>  
-    <SingleItem title={item.title}/>
+    <Single title={item.title} autor={item.autor}/>
        
         </div>
       ))}    
