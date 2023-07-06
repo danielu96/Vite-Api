@@ -2,14 +2,14 @@ import React from 'react';
 import axios from 'axios';
 import { useLoaderData } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-const localData = "../DATA/data.json" ;
+const localData = 'http://localhost:5173/DATA/db.json' ;
 
 const singleToDoQuery = (id) => {
     return {
       queryKey: ['todo', id],
       queryFn: async () => {
         const { data } = await axios.get(`${localData}${id}`);
-        console.log({data})
+        console.log({id})
         return data;
       },
     };
@@ -30,12 +30,13 @@ const singleToDo = data.items[0];
 const {
   
     title:name,
-    autor:autor,
+    // autor:autor,
    
   } = singleToDo;
   return (
     <div>ToDo
         {name}
+      
     </div>
   )
 }
