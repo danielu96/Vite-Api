@@ -10,6 +10,7 @@ const singleCocktailQuery = (id) => {
     queryKey: ['cocktail', id],
     queryFn: async () => {
       const { data } = await axios.get(`${CoctailUrl}${id}`);
+    
       return data;
     },
   };
@@ -51,6 +52,7 @@ const {
       <img style={{width:'50%'}} src={image} alt={name} className='img' />
       <p>{info}</p>
       <p>{instructions}</p>
+      <p>{category}</p>
       <span>{glass}</span>
 
      
