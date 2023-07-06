@@ -6,8 +6,9 @@ import {  useEffect,useState } from 'react'
 import axios from 'axios';
 import Wrapper from './assets/wrappers/App';
 // const CoctailUrl='https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=';
- const localData = "../DATA/data.json" ;
-
+ const localData =
+  "http://localhost:5173/DATA/data.json";
+// ' http://192.168.1.102:5173/'
 
 // const singleCocktailQuery = (id) => {
 //   return {
@@ -35,8 +36,8 @@ import Wrapper from './assets/wrappers/App';
 // };
 
 const Item = () => {
-  const [data,setData] = useState();
-  const {title}=useParams();
+  const [data,setData] = useState([]);
+  const {title}=useParams();  
   const fetchData = async () =>{
     try{
       const response = await axios(localData
@@ -60,15 +61,18 @@ const Item = () => {
 //   title: title,
 // } = singleItem;
   return (
-<Wrapper>    <h1> {title}</h1>   
+<Wrapper>    <h1> {title}</h1> 
+{/* <p>{autor}</p>   */}
 
-{/* {data
-.filter((item)=>(item.title===title))
-.map((item,id)=>(
+{data
+// .filter((item)=>(title===item.title))
+.map((item,id)=>
+(
          <div key={id}>  
-     {item.title}
+     {item.title},{item.autor}
       </div>  
-     ) )}  */}
+     ) )} 
+    
 
  </Wrapper> 
 
