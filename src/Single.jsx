@@ -2,13 +2,14 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import Wrapper from './assets/wrappers/App'
 
-const Single = ({title}) => {
+const Single = ({title,autor}) => {
  
   return (
     
     <div style={{width:'30vw',display:'flex',justifyContent:'space-between'}}>
       
-        <h4>{title}</h4>
+        <h6>{title}</h6>
+        <p>{autor}</p>
         {/* <p>{autor}</p> */}
         <Link  
         // to='/Item'
