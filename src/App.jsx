@@ -15,6 +15,8 @@ import Coctail from "./Coctail";
 import Todos from "./Pages/Todos";
 import ToDo from "./Pages/ToDo";
 import Api from "./Pages/Api";
+import Newsletter from "./Pages/Newsletter";
+import {action as newsletterAction} from './Pages/Newsletter'
 
 
 const queryClient = new QueryClient({
@@ -43,7 +45,7 @@ const router = createBrowserRouter([
         ,
       },
         {
-        path:'Todos',
+        path:'tasks',
         element: <Todos/>  ,
         loader:LocalLoader   , 
         
@@ -75,6 +77,11 @@ const router = createBrowserRouter([
         path:'Api',
         element:<Api/>
       },
+      {
+        path:'Newsletter',
+        element:<Newsletter/>,
+        action:newsletterAction
+      }
      
     ]
   },
