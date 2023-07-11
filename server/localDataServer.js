@@ -48,11 +48,12 @@ app.get('/api/tasks', (req, res) => {
 
 app.post('/api/tasks', async (req, res) => {
   const { title } = req.body;
-  if (!title) {
-    res.status(400).json({ msg: 'please provide title' });
+  const { autor } = req.body;
+  if (!title && !autor) {
+    res.status(400).json({ msg: 'please provide title and autor' });
     return;
   }
-  const newTask = { id: nanoid(), title, isDone: false };
+  const newTask = { id: nanoid(), title, autor,isDone: false };
   taskList = [...taskList, newTask];
   await writeTasksToFile(taskList);
   res.json({ task: newTask });
