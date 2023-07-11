@@ -1,4 +1,5 @@
 import React from 'react'
+import Wrapper from './assets/wrappers/Test';
 import CoctailCard from './CoctailCard';
 
 const CoctailList = ({drinks}) => {
@@ -14,14 +15,14 @@ return {
 
 
   return (
-    <div style={{display:"grid"}}>
-        <h1>CoctailList</h1>
+    <Wrapper>    
+        
 {formattedDrinks.map((item) => {
     return (
         <CoctailCard key={item.id} {...item}/>
     )
-})}
-    </div>
+})}    
+     </Wrapper>
   )
 }
 
