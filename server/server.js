@@ -5,10 +5,10 @@ const app = express();
 import morgan from 'morgan';
 
 let taskList = [
-  { id: nanoid(), title: 'do something impportant', isDone: false },
-  { id: nanoid(), title: 'rest some', isDone: false },
-  { id: nanoid(), title: 'clean office', isDone: true },
-  { id: nanoid(), title: 'take a dog with some food', isDone: false },
+  { id: nanoid(), title: 'do something impportant',autor:"DAN",email:'dan@wp.pl', isDone: false },
+  { id: nanoid(), title: 'rest some',autor:"PAUL",email:'paul@pp.pl', isDone: false },
+  { id: nanoid(), title: 'clean office',autor:"RAUL",email:'raul@wp.pl', isDone: true },
+  { id: nanoid(), title: 'take a dog with some food',autor:"JOHN",email:'john@jp.pl', isDone: false },
 ];
 
 if (process.env.NODE_ENV !== 'production') {
@@ -28,11 +28,13 @@ app.get('/api/tasks', (req, res) => {
 
 app.post('/api/tasks', (req, res) => {
   const { title } = req.body;
-  if (!title) {
-    res.status(400).json({ msg: 'please provide title' });
+  const { autor } = req.body;
+  const { email } = req.body;
+  if (!title && !autor && !email) {
+    res.status(400).json({ msg: 'please provide valuesa' });
     return;
   }
-  const newTask = { id: nanoid(), title, isDone: false };
+  const newTask = { id: nanoid(), title,autor,email, isDone: false };
   taskList = [...taskList, newTask];
   res.json({ task: newTask });
 });
