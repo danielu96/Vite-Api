@@ -35,7 +35,7 @@ import Wrapper from './assets/wrappers/App';
 //   return {id,data}
 // };
 
-const Item = () => {
+const Item = ({autor}) => {
   const [data,setData] = useState([]);
   const {title}=useParams();  
   const fetchData = async () =>{
@@ -62,7 +62,7 @@ const Item = () => {
 // } = singleItem;
   return (
 <Wrapper>    <h1> {title}</h1> 
-{/* <p>{autor}</p>   */}
+<p>{autor}</p>  
 
 {data
 // .filter((item)=>(title===item.title))
