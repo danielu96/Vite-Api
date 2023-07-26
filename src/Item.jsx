@@ -65,13 +65,13 @@ const Item = ({autor}) => {
 <p>{autor}</p>  
 
 {data
-// .filter((item)=>(title===item.title))
-.map((item,id)=>
-(
-         <div key={id}>  
-     {item.title},{item.autor}
-      </div>  
-     ) )} 
+.map((item,id)=>{
+  if (item.id ===id){
+    return <div key={id}> {item.title},{item.autor}{autor}</div>  
+  }
+}
+)}
+
     
 
  </Wrapper> 
