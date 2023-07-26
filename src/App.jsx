@@ -1,10 +1,11 @@
  import { createBrowserRouter ,RouterProvider} from "react-router-dom";
  import {loader as OneItem} from './Test';
  import {loader as SingleCoctaiLoader} from './Coctail';
- import {loader as SingleToDoLoader} from './Pages/ToDo'
  import {loader as LocalLoader} from'./Pages/Todos';
+//  import {loader as todoDetailLoader} from './Pages/ToDo'
  import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-//  import {loader as SingleItemLoader} from '@tanstack/react-query';
+ import {loader as SingleTasksLoader} from './Pages/ToDo';
+import Login from "./Pages/login";
 import Item from './Item';
 import Home from './Home';
 import List from './List';
@@ -17,6 +18,7 @@ import ToDo from "./Pages/ToDo";
 import Api from "./Pages/Api";
 import Newsletter from "./Pages/Newsletter";
 import {action as newsletterAction} from './Pages/Newsletter'
+import Register from "./Pages/register";
 
 
 const queryClient = new QueryClient({
@@ -34,6 +36,14 @@ const router = createBrowserRouter([
     errorElement:<Error/>,
     children:[
       {
+        path:'login',
+        element:<Login/>,
+      },
+      {
+        path:'register',
+        element:<Register/>,
+      },
+      {
         path:'Item/:title',
         element: <Item/>  ,
         // loader:SingleItemLoader(queryClient),       
@@ -45,15 +55,16 @@ const router = createBrowserRouter([
         ,
       },
         {
+          index:true,
         path:'tasks',
         element: <Todos/>  ,
         loader:LocalLoader   , 
         
       },
       {
-        path:'todo/:id',
-        element: <ToDo/>   , 
-          loader:SingleToDoLoader(queryClient),
+        path:'tasks/:id',
+        element: <ToDo />   , 
+           loader:SingleTasksLoader(queryClient), 
         
       },
       {
