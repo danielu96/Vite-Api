@@ -25,14 +25,14 @@ const Login = () => {
     <ToastContainer 
      position="top-center"
      />
-    <div className='container'>
+    <div className='container-login'>
         <h3>Login</h3>
     <form style={{display:'grid',alignContent:'center', justifyContent:'center'}}
     onSubmit={handleSubmit}
     >
       <label style={{margin:'auto auto 7px 0px'}} htmlFor='title'>Email</label>     
       <input 
-      style={{background:'#f7f7f7',borderRadius:"5px",border:"none"}}
+           style={{height:"1.3rem",background:'#f7f7f7',borderRadius:"5px",border:"none",marginBottom:"5px"}}
       type='text'
       id='title'
       value={title}
@@ -40,7 +40,7 @@ const Login = () => {
       ></input> 
        <label style={{margin:'auto auto 7px 0px'}} htmlFor='autor'>Password</label>
      <input 
-      style={{lineHeight:"1,4rem",background:'#f7f7f7',borderRadius:"5px",border:"none"}}
+      style={{height:"1.3rem",background:'#f7f7f7',borderRadius:"5px",border:"none",marginBottom:"5px"}}
       type='text'
       id='autor'
       value={autor}
