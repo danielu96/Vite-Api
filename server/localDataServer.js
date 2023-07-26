@@ -45,15 +45,30 @@ app.get('/', (req, res) => {
 app.get('/api/tasks', (req, res) => {
   res.json({ taskList });
 });
+app.get('/api/tasks/:id', (req, res) => {
+  const { id } = req.params;
+  const { isDone } = req.body;
+  // const { title } = req.body;
+  const { author } = req.body;
+  // const { email} = req.body;
+
+  taskList = taskList.map((task) => {
+    if (task.id === id) {
+      return { ...task , isDone,author};
+    }
+    return task;
+  });
+  res.json({ id,author });
+});
 
 app.post('/api/tasks', async (req, res) => {
   const { title } = req.body;
-  const { autor } = req.body;
-  if (!title && !autor) {
+  const { author } = req.body;
+  if (!title && !author) {
     res.status(400).json({ msg: 'please provide title and autor' });
     return;
   }
-  const newTask = { id: nanoid(), title, autor,isDone: false };
+  const newTask = { id: nanoid(), title, author,isDone: false };
   taskList = [...taskList, newTask];
   await writeTasksToFile(taskList);
   res.json({ task: newTask });
