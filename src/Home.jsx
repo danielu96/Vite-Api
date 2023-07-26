@@ -8,7 +8,7 @@ const Home = () => {
     <>
   
 <NavBar/>
-<Wrapper>
+<Wrapper>  
 <Outlet />
 </Wrapper>
   
