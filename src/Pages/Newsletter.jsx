@@ -50,8 +50,8 @@ const Newsletter = () => {
         <input
           type='text'
           className='form-input'
-          name='autor'
-          id='autor'
+          name='author'
+          id='author'
           required
         />
       </div>
