@@ -17,7 +17,7 @@ export const useFetchTasks = () => {
 export const useCreateTask = () => {
   const queryClient = useQueryClient();
   const { mutate: createTask, isLoading } = useMutation({
-    mutationFn:  ([taskTitle,taskAutor]) => customFetch.post('/', { autor:taskAutor,title:taskTitle,id:nanoid() }),
+    mutationFn:  ({taskTitle,taskAutor}) => customFetch.post(`/ ${ taskAutor},${taskTitle }`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tasks'] });
       toast.success('task added');
