@@ -8,11 +8,13 @@ background: lightGray;
 text-align: center;
 justify-items:center;
 button{
-  width:4rem;
-  color:black;
+ width:100%;
+ padding:3px;
+  color:white;
   margin:1rem auto auto ;
-  background:white;
+  background:blue;
   border-radius:5px;
+  border:none;
 
 }
 button:hover{
@@ -23,11 +25,14 @@ button:hover{
 .container{
   display:grid;
   justify-items:space-between;  
-  padding:1rem;
-  width:30vw;
-  height:30vh;
-  background-color:white;
-  border:solid 1px gray;
+  padding:2rem;
+  row-gap:2rem;
+  width:fit-content;
+  height:fit-content;
+  background-color:lightBlue;
+  color:blue;
+  border-top:solid 5px  blue;
+  border-bottom:solid 5px  blue;
   border-radius:10px;
   margin-bottom:2rem;
   box-shadow: 11px 14px 24px -18px rgba(66, 68, 90, 1);
@@ -35,7 +40,29 @@ button:hover{
 }
 .container:hover{
 
-  box-shadow: 15px 16px 28px -18px rgba(66, 68, 90, 1);
+  box-shadow: 5px 6px 8px -18px rgba(66, 68, 90, 1);
+transition:1s;
+
+}
+.container-login{
+  display:grid;
+  justify-items:space-between;  
+  padding:1rem;
+  row-gap:2rem;
+  width:fit-content;
+  height:fit-content;
+  background-color:lightBlue;
+  color:blue;
+  border-top:solid 5px  blue;
+  border-bottom:solid 5px  blue;
+  border-radius:10px;
+  margin-bottom:2rem;
+  box-shadow: 11px 14px 24px -18px rgba(66, 68, 90, 1);
+
+}
+.container-login:hover{
+
+  box-shadow: 5px 6px 8px -18px rgba(66, 68, 90, 1);
 transition:1s;
 
 }
