@@ -3,7 +3,8 @@ import TodoList from '../Components/TodoList'
 import { useLoaderData } from 'react-router-dom';
 import axios from 'axios';
 const localData = 
-'http://localhost:5000/api/tasks'
+// 'http://localhost:5000/api/tasks'
+"https://jsonplaceholder.typicode.com/comments"
 // "../DATA/db.json"
  ;
 
@@ -14,7 +15,7 @@ export const loader = async ()=>{
    
     ;
     console.log(response)
-    return {items:response.data.taskList}
+    return {items:response.data}
   };
 
 
