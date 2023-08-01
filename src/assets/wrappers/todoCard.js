@@ -7,7 +7,9 @@ width:auto;
   gap: 2rem;
   border:1px solid;
   padding:10px;
-  background-color:white;  
+  background-color:lightBlue; 
+  border-top:5px solid blue; 
+  border-bottom:5px solid blue; 
   border-radius:10px;
   box-shadow: 15px 16px 28px -18px rgba(66, 68, 90, 1);
 }
