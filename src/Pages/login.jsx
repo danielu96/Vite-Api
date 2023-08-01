@@ -46,7 +46,11 @@ const Login = () => {
       value={autor}
       onChange={(e)=>setAutor( e.target.value)}
       ></input>            
-   <button onClick={handleSubmit}>submit</button>
+   {/* <button */}
+    <Link to={'/Dashboard'}>submit</Link>
+  {/* //  onClick={handleSubmit} */}
+   {/* >submit</button> */}
+   {/* <button onClick={href='/Dashboard'}>sub</button> */}   
   <div style={{marginTop:"1rem"}}> Not a member yet? <Link to={'/register'}>Register</Link></div>
      </form>      
     </div>    
