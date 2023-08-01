@@ -12,6 +12,12 @@ let taskList = [
   { id: nanoid(), title: 'clean office',author:"RAUL",email:'raul@wp.pl', isDone: true },
   { id: nanoid(), title: 'take a dog with some food',author:"JOHN",email:'john@jp.pl', isDone: false },
 ];
+let userList = [
+  { id: nanoid(), password: '123d',name:"DAN",email:'dan@wp.pl'},
+  { id: nanoid(), password: 'pa213',name:"PAUL",email:'paul@pp.pl'},
+  { id: nanoid(), password: 'r098',name:"RAUL",email:'raul@wp.pl'},
+  { id: nanoid(), password: 'j456',name:"JOHN",email:'john@jp.pl'},
+];
 
 if (process.env.NODE_ENV !== 'production') {
   app.use(morgan('dev'));
@@ -49,12 +55,41 @@ app.post('/api/tasks', (req, res) => {
   const { author } = req.body;
   const { email } = req.body;
   if (!title && !author && !email) {
-    res.status(400).json({ msg: 'please provide VALUE' });
+    res.status(400).json({ msg: 'please provide value' });
     return;
   }
   const newTask = { id: nanoid(), title,author,email, isDone: false };
   taskList = [...taskList, newTask];
   res.json({ task: newTask });
+});
+app.get('/api/users', (req, res) => {
+  res.json({ userList });
+});
+app.get('/api/users/:id', (req, res) => {
+  const { id } = req.params; 
+  // const { name } = req.body;
+  // const { password } = req.body;
+  // const { email} = req.body;
+
+  userList = userList.map((user) => {
+    if (user.id === id) {
+      return { ...user};
+    }
+    return user;
+  });
+  res.json({ id,user});
+});
+app.post('/api/users', (req, res) => {
+  const { name } = req.body;
+  const { password } = req.body;
+  const { email } = req.body;
+  if (!name && !password && !email) {
+    res.status(400).json({ msg: 'please provide value' });
+    return;
+  }
+  const newUser = { id: nanoid(), password,name,email };
+  userList = [...userList, newUser];
+  res.json({ user: newUser });
 });
 
 app.patch('/api/tasks/:id', (req, res) => {
