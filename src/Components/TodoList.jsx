@@ -5,11 +5,11 @@ import TodoCard from './TodoCard';
 const TodoList = ({items}) => {
 
     const formattedTodos = items.map((item)=>{
-        const {id,title,author,email}=item
+        const {id,name,body,email}=item
         return {
             id,
-            title,
-            author,
+            name,
+            body,
             email
         }
         });
