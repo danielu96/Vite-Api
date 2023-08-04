@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import { nanoid } from 'nanoid';
 import morgan from 'morgan';
+// import {data} from './users.json'
 
 const app = express();
 
@@ -13,11 +14,12 @@ let taskList = [
   { id: nanoid(), title: 'take a dog with some food',author:"JOHN",email:'john@jp.pl', isDone: false },
 ];
 let userList = [
-  { id: nanoid(), password: '123d',name:"DAN",email:'dan@wp.pl'},
-  { id: nanoid(), password: 'pa213',name:"PAUL",email:'paul@pp.pl'},
-  { id: nanoid(), password: 'r098',name:"RAUL",email:'raul@wp.pl'},
-  { id: nanoid(), password: 'j456',name:"JOHN",email:'john@jp.pl'},
+  { userId: 1,id: nanoid(), password: '123d',name:"DAN",email:'dan@wp.pl'},
+  { userId: 1,id: nanoid(), password: 'pa213',name:"PAUL",email:'paul@pp.pl'},
+  { userId: 1,id: nanoid(), password: 'r098',name:"RAUL",email:'raul@wp.pl'},
+  { userId: 1,id: nanoid(), password: 'j456',name:"JOHN",email:'john@jp.pl'},
 ];
+
 
 if (process.env.NODE_ENV !== 'production') {
   app.use(morgan('dev'));
@@ -36,18 +38,18 @@ app.get('/api/tasks', (req, res) => {
 });
 app.get('/api/tasks/:id', (req, res) => {
   const { id } = req.params;
-  const { isDone } = req.body;
+  // const { isDone } = req.body;
   // const { title } = req.body;
-  const { author } = req.body;
+  // const { author } = req.body;
   // const { email} = req.body;
 
   taskList = taskList.map((task) => {
     if (task.id === id) {
-      return { ...task , isDone,author};
+      return { ...task };
     }
     return task;
   });
-  res.json({ id,author });
+  res.json({ id });
 });
 
 app.post('/api/tasks', (req, res) => {
@@ -58,27 +60,34 @@ app.post('/api/tasks', (req, res) => {
     res.status(400).json({ msg: 'please provide value' });
     return;
   }
-  const newTask = { id: nanoid(), title,author,email, isDone: false };
+  const newTask = { id: nanoid(), title,author,email, isDone: true };
   taskList = [...taskList, newTask];
   res.json({ task: newTask });
 });
 app.get('/api/users', (req, res) => {
-  res.json({ userList });
+  res.json({ userList});
 });
 app.get('/api/users/:id', (req, res) => {
   const { id } = req.params; 
   // const { name } = req.body;
   // const { password } = req.body;
   // const { email} = req.body;
-
-  userList = userList.map((user) => {
-    if (user.id === id) {
-      return { ...user};
-    }
-    return user;
-  });
-  res.json({ id,user});
-});
+const singleUser = userList.find(
+  (user)=> user.id===Number(user.id)
+  )
+if(!singleUser){
+  return res.status(404).send('not exist')
+}
+return res.json(id,singleUser)
+})
+  // userList = userList.find((user) => {
+  //   if (user.id === id) {
+  //     return { ...user};
+  //   }
+  //   return user;
+  // });
+//   res.json({ id,user});
+// });
 app.post('/api/users', (req, res) => {
   const { name } = req.body;
   const { password } = req.body;
@@ -91,15 +100,30 @@ app.post('/api/users', (req, res) => {
   userList = [...userList, newUser];
   res.json({ user: newUser });
 });
+app.delete('/api/users/:id', (req, res) => {
+  const { id } = req.params;
+  userList = userList.filter((user) => user.id !== id);
+
+  res.json({ msg: 'task removed' });
+});
+app.patch('/api/users/:id', (req, res) => {
+  const { id } = req.params;
+  const { name } = req.body; 
+  userList = userList.map((user) => {
+    if (user.id === id) {
+      return { ...user, name};
+    }
+    return user;
+  });
+  res.json({ msg: 'task updated' });
+});
 
 app.patch('/api/tasks/:id', (req, res) => {
   const { id } = req.params;
-  const { isDone } = req.body;
-  const { title } = req.body;
-  const { author } = req.body;
+  const { isDone } = req.body; 
   taskList = taskList.map((task) => {
     if (task.id === id) {
-      return { ...task, isDone,title,author };
+      return { ...task, isDone };
     }
     return task;
   });
