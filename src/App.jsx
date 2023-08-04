@@ -26,6 +26,7 @@ import Dashboard from "./Components/Dashboard";
 import User from "./Pages/User";
 import { loader as SingleUserLoader} from "./Pages/User";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { Posts } from "./Pages/POSTS/Posts";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -41,6 +42,11 @@ const router = createBrowserRouter([
     element:   <Home/>  ,
     errorElement:<Error/>,
     children:[
+      {
+        path:'comments',
+        element:<Posts/>,
+        // loader:UserLoader   , 
+      },
       {
         path:'users',
         element:<Users/>,
