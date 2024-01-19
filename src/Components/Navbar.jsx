@@ -1,55 +1,23 @@
-import Wrapper from '../assets/wrappers/Navbar';
-import { FaAlignLeft, FaUserCircle, FaCaretDown } from 'react-icons/fa';
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { toggleSidebar,clearStore } from '../Pages/FEATURES/USER/userSlice';
+import React from 'react'
+import { NavLink } from 'react-router-dom'
 
-const Navbar = () => {
-  const [showLogout, setShowLogout] = useState(false);
-  const { user } = useSelector((store) => store.user);
-  const dispatch = useDispatch();
-
-  const toggle = () => {
-    dispatch(toggleSidebar());
-  };
-
+const NavBar = () => {
   return (
-    <Wrapper>
-    
-      <div className='nav-center'>
-        <button type='button' className='toggle-btn' onClick={toggle}>
-          <FaAlignLeft />
-        </button>
-        <div>
-        
-          <h3 className='logo-text'></h3>
-        </div>
-        <div className='btn-container'>
-          <button
-            type='button'
-            className='btn'
-            onClick={() => setShowLogout(!showLogout)}
-          >
-            <FaUserCircle />
-            {user?.name}
-           
-            <FaCaretDown />
-          </button>
-          <div className={showLogout ? 'dropdown show-dropdown' : 'dropdown'}>
-            <button
-              type='button'
-              className='dropdown-btn'
-              onClick={() => dispatch(clearStore('Logging out...'))}
-            >
-              logout
-            </button>
-          </div>
-        </div>
-      </div>
-     
-     </Wrapper> 
-    
-  );
+    <div style={{width:'100vw',height:'5vh',border:'solid 1px gray',boxShadow:'1px 1px gray', backgroundColor:'whitesmoke',display:'flex', justifyContent:'center',gap:"1rem",paddingTop:'0.5rem' }}>
   
-};
-export default Navbar;
+    <NavLink to="/">Home</NavLink>
+    <NavLink to="/register">Register</NavLink>
+    <NavLink to="/login">Login</NavLink>
+    <NavLink to="/users">Users</NavLink>
+    <NavLink to="/comments">Comments</NavLink>
+    <NavLink to="/tasks">Todos</NavLink>
+    <NavLink to="/Test">Test</NavLink>
+    <NavLink to="/List">List</NavLink>   
+    <NavLink to="/Apiks">Api</NavLink>
+    <NavLink to="/Newsletter">Newsletter</NavLink>
+    
+    </div>
+  )
+}
+
+export default NavBar
