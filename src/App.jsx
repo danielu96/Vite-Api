@@ -1,33 +1,45 @@
- import { createBrowserRouter ,RouterProvider} from "react-router-dom";
- import {loader as OneItem} from './Test';
- import {loader as SingleCoctaiLoader} from './Coctail';
- import {loader as LocalLoader} from'./Pages/Todos';
- import {loader as UserLoader} from'./Pages/Users';
-//  import {loader as todoDetailLoader} from './Pages/ToDo'
- import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
- import {loader as SingleTasksLoader} from './Pages/ToDo';
-import Login from "./Pages/login";
-import Item from './Item';
-import Home from './Home';
-import List from './List';
-import Error from "./Error";
-import Test from "./Test";
-import CoctailList from "./CoctailList";
-import Coctail from "./Coctail";
-import Todos from "./Pages/Todos";
-import ToDo from "./Pages/ToDo";
-import Api from "./Pages/Api";
-import Newsletter from "./Pages/Newsletter";
-import {action as newsletterAction} from './Pages/Newsletter'
-import Register from "./Pages/register";
-import Users from "./Pages/Users";
-import { action as UsersAction} from "./Pages/register";
-import Dashboard from "./Components/Dashboard";
-import User from "./Pages/User";
-import { loader as SingleUserLoader} from "./Pages/User";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import {
+  Login,
+  Apiks,
+  Home,
+  Newsletter,
+  List,
+  Todos,
+  ToDo,
+  Test,
+  Register,
+  User,
+  Users,
+  Coctail
+} from './Pages'
 
+import Item from './Item';
+import Error from "./Error";
+import CoctailList from "./Components/CoctailList";
+import { ToastContainer } from 'react-toastify';
 import { NewUser } from "./Pages/USERS/NewUser";
+import ErrorElement from "./Components/ErrorElement";
+
+
+// ----------------LOADERS--------------------------------
+
+import {loader as SingleUserLoader} from "./Pages/User";
+import {loader as OneItem} from './Pages/Test';
+import {loader as SingleCoctaiLoader} from './Pages/Coctail';
+import {loader as LocalLoader} from'./Pages/Todos';
+import {loader as UserLoader} from'./Pages/Users';
+import {loader as SingleTasksLoader} from './Pages/ToDo';
+import {loader as ApiLoader} from './Pages/Api';
+
+//--------------Actions----------------------------
+import {action as UsersAction} from "./Pages/register";
+import {action as newsletterAction} from './Pages/Newsletter'
+
+//----------------------------------------------------------
+
+import { createBrowserRouter ,RouterProvider} from "react-router-dom";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'; 
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -43,11 +55,13 @@ const router = createBrowserRouter([
     element:   <Home/>  ,
     errorElement:<Error/>,
     children:[
+       
       {
         path:'comments',
         element:<NewUser/>,
         // loader:UserLoader   , 
-      },
+      },     
+     
       {
         path:'users',
         element:<Users/>,
@@ -67,12 +81,7 @@ const router = createBrowserRouter([
         path:'register',
         element:<Register/>,
         action:UsersAction
-      },
-      {
-        path:'dashboard',
-        element:<Dashboard/>,
-        // action:UsersAction
-      },
+      },     
       {
         path:'Item/:title',
         element: <Item/>  ,
@@ -81,20 +90,22 @@ const router = createBrowserRouter([
       },
       {
         path:'List',
-        element: <List/>      
-        ,
+        element: <List/> ,
+        errorElement: ErrorElement,     
+        
       },
-        {
-          index:true,
+        {         
         path:'tasks',
         element: <Todos/>  ,
         loader:LocalLoader   , 
+        errorElement: ErrorElement,
         
       },
       {
         path:'tasks/:id',
         element: <ToDo />   , 
            loader:SingleTasksLoader(queryClient), 
+           errorElement: ErrorElement,
         
       },
       {
@@ -115,17 +126,21 @@ const router = createBrowserRouter([
         
       },   
       {
-        path:'Api',
-        element:<Api/>
+        path:'Apiks',
+        element:<Apiks/>,
+        loader: ApiLoader(queryClient),
+        errorElement: ErrorElement,
       },
       {
         path:'Newsletter',
         element:<Newsletter/>,
-        action:newsletterAction
+        action:newsletterAction,     
+        errorElement: ErrorElement,
       }
      
     ]
   },
+  <ToastContainer position='top-center' />
  
 ]) ;
  
@@ -138,14 +153,8 @@ function App() {
 <RouterProvider router={router}/>
 <ReactQueryDevtools/>
 </QueryClientProvider>
-
 </>
 
   )
 }
-// const Wrapper = styled.div`
-//   text-align: center;
-// `
-
-
 export default App

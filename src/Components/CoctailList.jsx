@@ -1,5 +1,5 @@
 import React from 'react'
-import Wrapper from './assets/wrappers/Test';
+import Wrapper from '../assets/wrappers/Test';
 import CoctailCard from './CoctailCard';
 
 const CoctailList = ({drinks}) => {

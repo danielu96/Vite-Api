@@ -1,15 +1,31 @@
 import React from 'react';
 import {  useEffect,useState } from 'react';
-import Wrapper from './assets/wrappers/App';
+import Wrapper from '../assets/wrappers/App';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import { useMutation,useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import Single from './Single';
+import Single from '../Single';
 import {nanoid} from 'nanoid';
+import customFetch from '../Components/utils';
+// import { useFetchTasks } from '../Components/reactQueryCustomHooks';
+// import { QueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
+import Items from '../Components/Items';
 
-
-
+export const useFetchTasks = () => {
+  const {data } = useQuery({
+    queryKey: ['users'],
+    queryFn: async () => {
+    //  const {data} = queryClient.ensureQueryData({ queryKey: 'users' })
+      const response  = await customFetch.get('/');
+      console.log(response);
+    //  const cachePolicy= "stale-while-revalidate"
+      return {data:response.data.taskList};
+    },
+  });
+  return { data};
+};
 
 const List = () => {
   
@@ -18,6 +34,8 @@ const List = () => {
     const [autor , setAutor] = useState('');  
     // const url = "https://rickandmortyapi.com/api/character/1,10,15";
 
+
+    
     //  const useFetchTasks = () => {
     //   const {  data } = useQuery({
     //     queryKey: ['tasks'],
@@ -29,24 +47,25 @@ const List = () => {
     //   return {  data };
     // }; 
  
-    const customFetch = axios.create({
-      baseURL:      
-      'http://localhost:5000/api/tasks'   ,
-    });
+    // const customFetch = axios.create({
+    //   baseURL:      
+    //   'http://localhost:5000/api/tasks'   ,
+    // });
     
  
   // const localData =
   // // "../DATA/data.json" ;
   // "http://localhost:5000/api/tasks";
 
- const {data} = useQuery ({
-queryKey:['tasks'],
-queryFn:async () => {
-  const {data} = await customFetch.get("/");
-  return data;
-},
-}
- )
+//  const {data} = useQuery ({
+// queryKey:['tasks'],
+// queryFn:async () => {
+//   const {data} = await customFetch.get("/");
+//   console.log(data);
+//   return data;
+// },
+// }
+//  )
 // const fetchData = async () =>{
 //   try{
 //     const response = await axios(localData    
@@ -95,6 +114,11 @@ const {mutate:createTask}=useMutation({
     // } 
       // return (createTask)     
   }
+  // const queryClient = useQueryClient();
+  // const taskList = queryClient.ensureQueryData({ queryKey: 'tasks' });
+   const {data} = useFetchTasks();
+  //  const {data} = queryClient.ensureQueryData({ queryKey: 'users' })
+   console.log(data)
   return (
     <>
     <Wrapper>      
@@ -122,13 +146,16 @@ const {mutate:createTask}=useMutation({
       ></input>            
    <button onClick={handleSubmit}>check it</button>
      </form>      
-    </div>    
-    {data.taskList.map((item,id)=>(
+    </div> 
+    
+    {/* <p>{data.data.length}</p>    */}
+    {/* {data.taskList.map((item,id)=>(
          <div key={id}>  
     <Single title={item.title} autor={item.autor}/>       
         </div>
-      ))}        
+      ))}         */}
     </Wrapper>
+    <Items/>
     </>
   )
 }

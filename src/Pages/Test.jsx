@@ -1,7 +1,7 @@
 import React from 'react'
 import { useLoaderData } from 'react-router-dom';
 import axios from 'axios';
-import CoctailList from './CoctailList';
+import CoctailList from '../Components/CoctailList';
 
 // import Wrapper from './assets/wrappers/App';
 
