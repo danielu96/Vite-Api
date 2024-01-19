@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { clearStore } from '../Pages/FEATURES/USER/userSlice';
+
 import { getUserFromLocalStorage } from './localStorage';
 
 export const JobsFetch = axios.create({ 
