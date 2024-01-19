@@ -1,69 +1,52 @@
-import React from 'react';
-import axios from 'axios';
-import { useLoaderData,Link } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
-// const localData = 'http://localhost:5000/api/tasks/${id}';
-const fakeData= "https://jsonplaceholder.typicode.com/comments?postId=1"
+import {React,useState } from 'react'
+import { useLoaderData , Link} from 'react-router-dom';
+import customFetch from '../Components/utils'
+import { tasksFetch } from '../UTILS/axios';
 
-// const todoDetailLoader= async ({params})=>{
-//   const {id}=params
-//   const res = fetch('http://localhost:5000/tasks/'+id)
-//   return res.json()
-// };
-
-const singleTasksQuery = (id) => {
-    return {
-      queryKey: ['comments', id],
-      queryFn: async () => {
-        const { data } = await axios.get(
-          // 'http://localhost:5000/api/tasks/'+id
-          `${fakeData}${id}`
-          );
-        console.log({data,id})
-        return data;
-      },
-    }; 
-  };  
-  export const loader =
-    (queryClient) =>
-    async ({ params }) => {
-      const { id} = params;     
-      await queryClient.ensureQueryData(singleTasksQuery(id));
-      console.log({singleTasksQuery})
-      return { id };
-    };
-
+ const singleTaskQuery = (id) => {
+  return {
+    queryKey: ['singleTask', id],
+    queryFn: () => tasksFetch(`/${id}`),
+  };
+};
+export const loader =
+  (queryClient) =>
+  async ({ params }) => {
+    const response = await queryClient.ensureQueryData(
+      singleTaskQuery(params.id)
+    );
+    return { task:response.data.task};
+  };
 
 const ToDo = () => {
-    const { id}=useLoaderData();
-    const { data } = useQuery(singleTasksQuery(id));
-    // const  {data} = useLoaderData(); 
-
-const singleToDo = 
-//  items.map((task) => {
-//   if (task.id === id) {
-//     return { ...task };
-//   }
-//   return task;
-// });
-data[0];
-const {
+  const { task } = useLoaderData();  
+  console.log(task)
   
-    name:title,
-    email:email,
-    body:body,
-   
-  } = singleToDo;
   return (
-    <div style={{marginTop:"8rem",gap:"2rem",lineHeight:"5rem"}}>
-      <h5>ToDo</h5>
-      <p>{id}</p>
-      <p>{title}</p>
-      <p>{email}</p>
-            <p>{body}</p>          
-            < Link to={'/tasks'} >back</Link>
-    
+    <section>
+    <div className='text-md breadcrumbs'>
+      <ul>
+        <li>
+          <Link to='/'>Home</Link>
+        </li>
+        <li>
+          <Link to='/tasks'>Tasks</Link>
+        </li>
+      </ul>
     </div>
-  )
+        <div className='mt-6 grid gap-y-8 lg:grid-cols-2  lg:gap-x-16'>   
+               <div>
+        <h4 className='capitalize text-3xl font-bold'>{task.author}</h4>
+        <p>{task.title}</p>
+        <p>{task.email}</p>      
+        <div className='mt-6'>               
+        </div>        
+        <div className='mt-10 '>        
+        </div>
+      </div>
+    </div>
+  </section> 
+      )
 }
+
 export default ToDo
