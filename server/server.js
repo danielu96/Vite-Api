@@ -3,9 +3,9 @@ import cors from 'cors';
 import { nanoid } from 'nanoid';
 import morgan from 'morgan';
 import bearerToken from 'express-bearer-token';
+import  userList  from '../src/Mocks/mockData.js';
 const app = express();
 import  jwt  from 'jsonwebtoken';
-// const jwt = require('jsonwebtoken');
 let taskList = [
   { id: nanoid(), title: 'do something important',author:"daniel",email:'daniel@wp.pl', isDone: false },
   { id: nanoid(), title: 'rest some',author:"PAUL",email:'paul@pp.pl', isDone: false },
@@ -17,24 +17,12 @@ let jobs = [
   { jobId: 2,id: nanoid(), position: 'monter',jobLocation:"Maiami",company:"Manta",jobType:'full-time',status:"pending" },
  { jobId: 3,id: nanoid(), position: 'kasier',jobLocation:"walia",company:"Unitra",jobType:'part-time',status:"interview" }
 ];
-let userList = [
-  { userId: 1,id: nanoid(), password: '123',name:"daniel",lastName:"Karka",location:"wasa",email:'daniel@wp.pl'},
-  { userId: 1,id: nanoid(), password: 'pa213',name:"PAUL",email:'paul@pp.pl'},
-  { userId: 1,id: nanoid(), password: 'r098',name:"RAUL",email:'raul@wp.pl'},
-  { userId: 1,id: nanoid(), password: 'j456',name:"JOHN",email:'john@jp.pl'},
-];
-let   defaultStats = [
-  {pending:20},
-{interview:10},
-{declines:22}
-]
+
 if (process.env.NODE_ENV !== 'production') {
   app.use(morgan('dev'));
 }
 app.use(cors());
 app.use(express.json());
-// app.use(bearerToken());
-// app.use(jwt);
 app.use(bearerToken({
   bodyKey: 'access_token',
   queryKey: 'access_token',
@@ -103,15 +91,23 @@ app.get('/api/users', (req, res) => {
   res.json({ userList});
 });
 app.get('/api/users/:id', (req, res) => {
-  const { id } = req.params;   
-const singleUser = userList.find(
-  (user)=> user.id===Number(user.id)
-  )
-if(!singleUser){
-  return res.status(404).send('not exist')
-}
-return res.json(id,singleUser)
-})
+  const { id } = req.params;
+  const user = userList.find((user)=> user.id ===id);
+  if (!user){
+    return res.status(404).json({msg:`no user ${id}`});
+  }
+  res.status(200).json({user})
+});
+// app.get('/api/users/:id', (req, res) => {
+//   const { id } = req.params;   
+// const singleUser = userList.find(
+//   (user)=> user.id===Number(user.id)
+//   )
+// if(!singleUser){
+//   return res.status(404).send('not exist')
+// }
+// return res.json(id,singleUser)
+// })
   // userList = userList.find((user) => {
   //   if (user.id === id) {
   //     return { ...user};

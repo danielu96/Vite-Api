@@ -1,34 +1,37 @@
+import { nanoid } from 'nanoid';
 
- export const  mockUserList = [
+  const  userList = [
       {
-        userId: 1,
-        id: "G3ImDzDxpb2dNSPH7sBIn",
+        id: nanoid(),
         password: "123",
-        name: "daniel",
-        lastName: "Karka",
-        location: "wasa",
+        name: "Daniel",
+        lastName: "Kartkowski",
+        location: "Wasabi",
         email: "daniel@wp.pl"
       },
       {
-        userId: 2,
-        id: "CxumneqBni5GXuSlKG1WP",
+        id:nanoid(),
         password: "pa213",
-        name: "PAUL",
-        email: "paul@pp.pl"
+        name: "Paul",
+        lastName: "Polowski",       
+        location: "San Paulo",
+        email: "paul@pp.pl",
       },
       {
-        userId: 3,
-        id: "cBogya9KGFeO9OBatNzDl",
+        id: nanoid(),
         password: "r098",
-        name: "RAUL",
+        name: "Raulo",
+        lastName: "Raulenios", 
+        location: "RaulosTown",
         email: "raul@wp.pl"
       },
       {
-        userId: 4,
-        id: "oTR_0Tu8vttdSLELa_b7b",
+        id: nanoid(),
         password: "j456",
-        name: "JOHN",
+        name: "John",
+        lastName: "Johnas", 
+        location: "JohnTown",
         email: "john@jp.pl"
       }
     ]
-  
+  export default userList
