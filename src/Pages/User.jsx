@@ -1,61 +1,34 @@
 import React from 'react'
-import axios from 'axios';
 import { useLoaderData,Link } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
 import Wrapper from '../assets/wrappers/todoCard';
-const localData = 'http://localhost:5000/api/users?id=1';
+import {customFetch} from '../UTILS/axios'
+
 
 const singleUserQuery = (id) => {
-    return {
-      queryKey: ['users', id],
-      queryFn: async () => {
-        const { data } = await axios.get(
-          // 'http://localhost:5000/api/users/'+id
-          `${localData}${id}`
-          );
-        console.log({data,id})
-        return data;
-      },
-    }; 
-  };  
-  export const loader =
-    (queryClient) =>
-    async ({ params }) => {
-      const { id} = params;     
-      await queryClient.ensureQueryData(singleUserQuery(id));
-      console.log({singleUserQuery})
-      return { id };
-    };
+  return {
+    queryKey: ['singleUser', id],
+    queryFn: () => customFetch(`/${id}`),
+  };
+};
+export const loader =
+  (queryClient) =>
+  async ({ params }) => {
+    const response = await queryClient.ensureQueryData(
+      singleUserQuery(params.id)
+    );
+    return { user:response.data.user};
+  };
 
 const User = () => {
-    const { id}=useLoaderData();
-    const { data } = useQuery(singleUserQuery(id));
-    const singleToDo = data.userList[0];
-    // data.map.userList((user) =>{
-    //   if (user.id===id) {
-    //     return{...user,email}
-    //   }
-    // });
-    //  items.map((task) => {
-//   if (task.id === id) {
-//     return { ...task };
-//   }
-//   return task;
-// });
-const {  
-    email:email,  
-    name:name,
-    password:password,
-      
-  } = singleToDo;
+    const { user}=useLoaderData();  
   return (
     <Wrapper>
-    <div className='card'>
-        <h3>User id is:</h3>
-         {id}
-        <p>{email}</p> 
-        <h1>{name}</h1>
-        <span>{password}</span>
+    <div className='card'>    
+        <p>{user.email}</p> 
+        <h1>{user.name}</h1>  
+        <span>{user.lastName}</span>
+        <p>{user.location}</p>
+
        <p>< Link to={'/users'} >back</Link></p>  
          </div>
          </Wrapper>  

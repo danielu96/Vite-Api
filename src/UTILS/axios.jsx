@@ -7,8 +7,8 @@ export const JobsFetch = axios.create({
   baseURL:  'http://localhost:5000/api/jobs/' ,
   // baseURL: 'https://jobify-prod.herokuapp.com/api/v1/toolkit',
 });
-const customFetch = axios.create({ 
-  baseURL:  'http://localhost:5000/api/users' ,
+export const customFetch = axios.create({ 
+  baseURL:  'http://localhost:5000/api/users/' ,
   // baseURL: 'https://jobify-prod.herokuapp.com/api/v1/toolkit',
 });
 export const tasksFetch = axios.create({ 
@@ -40,4 +40,4 @@ export const checkForUnauthorizedResponse = (error, thunkAPI) => {
   return thunkAPI.rejectWithValue(error.response.data.msg);
 };
 
-export default customFetch;
+// export default customFetch;
