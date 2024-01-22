@@ -4,14 +4,34 @@ import { nanoid } from 'nanoid';
 import morgan from 'morgan';
 import bearerToken from 'express-bearer-token';
 import  userList  from '../src/Mocks/mockData.js';
+
+import fs from 'fs/promises';
+import path, { dirname } from 'path';
+import { fileURLToPath } from 'url';
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const dataFilePath = path.join(__dirname, 'tasks.json');
+
+const readTasksFromFile = async () => {
+  try {
+    const data = await fs.readFile(dataFilePath, 'utf8');
+    return JSON.parse(data);
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+const writeTasksToFile = async (tasks) => {
+  try {
+    await fs.writeFile(dataFilePath, JSON.stringify(tasks));
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+let taskList = await readTasksFromFile();
+
 const app = express();
 import  jwt  from 'jsonwebtoken';
-let taskList = [
-  { id: nanoid(), title: 'do something important',author:"daniel",email:'daniel@wp.pl', isDone: false },
-  { id: nanoid(), title: 'rest some',author:"PAUL",email:'paul@pp.pl', isDone: false },
-  { id: nanoid(), title: 'clean office',author:"RAUL",email:'raul@wp.pl', isDone: true },
-  { id: nanoid(), title: 'take a dog with some food',author:"JOHN",email:'john@jp.pl', isDone: false },
-];
 let jobs = [
   { jobId: 1,id: nanoid(), position: 'engin',jobLocation:"Montreal",company:"Samsung",jobType:'part-time',status:"interview" },
   { jobId: 2,id: nanoid(), position: 'monter',jobLocation:"Maiami",company:"Manta",jobType:'full-time',status:"pending" },
@@ -30,11 +50,9 @@ app.use(bearerToken({
   reqKey: 'token',
   cookie: false, // by default is disabled
 }));
-// app.get('/', (req, res) => {
-//   res.send('<h1>Hello From Server...</h1>');
-// });
-//-------------------------------------------------------------------------
-// TASKS STARTS
+
+//----------------- TASKS -----------------------------
+
 app.get('/api/tasks', (req, res) => {
   res.json({ taskList });
 });
@@ -45,16 +63,9 @@ app.get('/api/tasks/:id', (req, res) => {
     return res.status(404).json({msg:`no task ${id}`});
   }
   res.status(200).json({task})
-  // taskList = taskList.map((task) => {
-  //   if (task.id === id) {
-  //     return { task };
-  //   }
-//     return task;
-//   });
-//   res.json({ id });
 });
 
-app.post('/api/tasks', (req, res) => {
+app.post('/api/tasks', async (req, res) => {
   const { title } = req.body;
   const { author } = req.body;
   const { email } = req.body;
@@ -64,25 +75,26 @@ app.post('/api/tasks', (req, res) => {
   }
   const newTask = { id: nanoid(), title,author,email, isDone: true };
   taskList = [...taskList, newTask];
+  await writeTasksToFile(taskList);
   res.json({ task: newTask });
 });
-app.patch('/api/tasks/:id', (req, res) => {
+app.patch('/api/tasks/:id', async (req, res) => {
   const { id } = req.params;
   const { isDone } = req.body; 
   taskList = taskList.map((task) => {
     if (task.id === id) {
       return { ...task, isDone };
-    }
+    }    
     return task;
   });
-
+  await writeTasksToFile(taskList);
   res.json({ msg: 'task updated' });
 });
 
-app.delete('/api/tasks/:id', (req, res) => {
+app.delete('/api/tasks/:id', async (req, res) => {
   const { id } = req.params;
   taskList = taskList.filter((task) => task.id !== id);
-
+  await writeTasksToFile(taskList);
   res.json({ msg: 'task removed' });
 });
 //-------------------------------------------------------------------------
