@@ -10,3 +10,4 @@ export { default as Register } from './Register';
 export { default as User } from './User';
 export { default as Users} from './Users';
 export { default as Coctail} from './Coctail';
+export { default as Stat} from './Stat';

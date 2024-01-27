@@ -10,7 +10,8 @@ import {
   Register,
   User,
   Users,
-  Coctail
+  Coctail,
+  Stat
 } from './Pages'
 
 import Item from './Item';
@@ -30,6 +31,7 @@ import {loader as LocalLoader} from'./Pages/Todos';
 import {loader as UserLoader} from'./Pages/Users';
 import {loader as SingleTasksLoader} from './Pages/ToDo';
 import {loader as ApiLoader} from './Pages/Api';
+import {loader as StatLoader} from './Pages/Stat';
 
 //--------------Actions----------------------------
 import {action as UsersAction} from "./Pages/register";
@@ -135,6 +137,12 @@ const router = createBrowserRouter([
         path:'Newsletter',
         element:<Newsletter/>,
         action:newsletterAction,     
+        errorElement: ErrorElement,
+      },
+      {
+        path:'Stat',
+        element:<Stat/>,    
+        loader: StatLoader(queryClient),        
         errorElement: ErrorElement,
       }
      
