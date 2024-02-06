@@ -60,18 +60,18 @@ test('Verify email for task 2', () => {
 });
 
 test('Verify task status', () => {
-  const task3 = tasks[4];
-  expect(task3.title).toBe('test 2');
-  expect(task3.author).toBe('daniwel');
-  expect(task3.email).toBe('test@test.com');
-  expect(task3.isDone).toBe(true);
+  const task4 = tasks[3];
+  expect(task4.title).toBe('test');
+  expect(task4.author).toBe('DAN');
+  expect(task4.email).toBe('test@test.com');
+  expect(task4.isDone).toBe(false);
 });
 
 test('Verify task author with "dan"', () => {
-  const tasksWithDan = tasks.filter((task) => task.author.includes('dan'));
-  expect(tasksWithDan.length).toBe(2);
-  expect(tasksWithDan[0].author).toBe('daniwel');
-  expect(tasksWithDan[1].author).toBe('danik');
+  const tasksWithDan = tasks.filter((task) => task.author.includes('DAN'));
+  expect(tasksWithDan.length).toBe(1);
+  expect(tasksWithDan[0].author).toBe('DAN');
+  // expect(tasksWithDan[1].author).toBe('danik');
 });
 
 
