@@ -81,7 +81,7 @@ app.post('/api/newsletter', async (req, res) => {
   const newAddress = { id: nanoid(),email };
   newsletterList = [...newsletterList, newAddress];
   await writeNewsletterToFile(newsletterList);
-  res.json({ newsletter: newAddress });
+  res.json({ newsletter: newAddress, msg: 'sent successfully' });
 });
 
 //----------------- TASKS -----------------------------
@@ -109,7 +109,7 @@ app.post('/api/tasks', async (req, res) => {
   const newTask = { id: nanoid(), title,author,email, isDone: true };
   taskList = [...taskList, newTask];
   await writeTasksToFile(taskList);
-  res.json({ task: newTask });
+  res.json({ task: newTask , msg: 'sent successfully'});
 });
 app.patch('/api/tasks/:id', async (req, res) => {
   const { id } = req.params;
