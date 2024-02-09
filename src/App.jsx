@@ -36,6 +36,7 @@ import {loader as StatLoader} from './Pages/Stat';
 //--------------Actions----------------------------
 import {action as UsersAction} from "./Pages/register";
 import {action as newsletterAction} from './Pages/Newsletter'
+import {action as tasksAction} from './Pages/Todos'
 
 //----------------------------------------------------------
 
@@ -99,6 +100,7 @@ const router = createBrowserRouter([
         {         
         path:'tasks',
         element: <Todos/>  ,
+        action:tasksAction,
         loader:LocalLoader   , 
         errorElement: ErrorElement,
         
