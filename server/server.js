@@ -10,6 +10,24 @@ import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const dataFilePath = path.join(__dirname, 'tasks.json');
+const dataFilePathNewsletter = path.join(__dirname, 'newsletter.json');
+
+const readNewsletterFromFile = async () => {
+  try {
+    const data = await fs.readFile(dataFilePathNewsletter, 'utf8');
+    return JSON.parse(data);
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+const writeNewsletterToFile = async (newsletter) => {
+  try {
+    await fs.writeFile(dataFilePathNewsletter, JSON.stringify(newsletter));
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 const readTasksFromFile = async () => {
   try {
@@ -29,7 +47,7 @@ const writeTasksToFile = async (tasks) => {
 };
 
 let taskList = await readTasksFromFile();
-
+let newsletterList = await readNewsletterFromFile();
 const app = express();
 import  jwt  from 'jsonwebtoken';
 let jobs = [
@@ -50,6 +68,21 @@ app.use(bearerToken({
   reqKey: 'token',
   cookie: false, // by default is disabled
 }));
+//------------------NEWSLETTER------------------------
+app.get('/api/newsletter', (req, res) => {
+  res.json({ newsletterList });
+});
+app.post('/api/newsletter', async (req, res) => {  
+  const { email } = req.body;
+  if ( !email) {
+    res.status(400).json({ msg: 'please provide value' });
+    return;
+  }
+  const newAddress = { id: nanoid(),email };
+  newsletterList = [...newsletterList, newAddress];
+  await writeNewsletterToFile(newsletterList);
+  res.json({ newsletter: newAddress });
+});
 
 //----------------- TASKS -----------------------------
 
