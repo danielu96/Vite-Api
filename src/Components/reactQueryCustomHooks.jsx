@@ -2,6 +2,18 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import customFetch from './utils';
 import { nanoid } from 'nanoid';
 import { toast } from 'react-toastify';
+import { newsletterFetch } from '../UTILS/axios';
+
+export const useFetchNewsletter = () => {
+  const { isLoading, data, isError } = useQuery({
+    queryKey: ['newsletter'],
+    queryFn: async () => {
+      const { data } = await newsletterFetch.get('/');
+      return data;
+    },
+  });
+  return { isLoading, isError, data };
+};
 
 export const useFetchTasks = () => {
   const { isLoading, data, isError } = useQuery({
@@ -17,10 +29,11 @@ export const useFetchTasks = () => {
 export const useCreateTask = () => {
   const queryClient = useQueryClient();
   const { mutate: createTask, isLoading } = useMutation({
-    mutationFn:  ({taskTitle,taskAutor}) => customFetch.post(`/ ${ taskAutor},${taskTitle }`),
+    mutationFn:  ({title,author,email}) => customFetch.post(`/ ${ author},${title },${email }`),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['tasks'] });
-      toast.success('task added');
+      // queryClient.invalidateQueries({ queryKey: ['tasks'] });
+      queryClient.removeQueries(['tasks']);  
+      toast.success(response?.data?.msg);
     },
     onError: (error) => {
       toast.error(error.response.data.msg);
@@ -58,6 +71,7 @@ export const useDeleteTask = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tasks'] });
+      toast.error('task deleted');
     },
   });
   return { deleteTask, deleteTaskLoading };
