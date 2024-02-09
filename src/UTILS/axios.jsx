@@ -15,6 +15,9 @@ export const tasksFetch = axios.create({
 export const usersFetch = axios.create({ 
   baseURL:  'http://localhost:5000/api/users/'   
 });
+export const newsletterFetch = axios.create({ 
+  baseURL:  'http://localhost:5000/api/newsletter/'   
+});
 
 
 // customFetch.interceptors.request.use((config) => {
