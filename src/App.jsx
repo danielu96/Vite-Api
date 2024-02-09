@@ -136,7 +136,7 @@ const router = createBrowserRouter([
       {
         path:'Newsletter',
         element:<Newsletter/>,
-        action:newsletterAction,     
+        action:newsletterAction(queryClient),     
         errorElement: ErrorElement,
       },
       {
