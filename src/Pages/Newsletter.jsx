@@ -1,117 +1,56 @@
 import React from 'react'
-import { Form,useNavigation,redirect, useLoaderData } from 'react-router-dom'
-import axios from 'axios';
+import  FormInput from '../Components/FormInput'
+import SubmitBtn from'../Components/SubmitBtn'
+import { Form } from 'react-router-dom';
+import { newsletterFetch } from '../UTILS/axios';
 import { toast } from 'react-toastify';
-// import Stat from '../Components/Stat';
-import { QueryClient } from '@tanstack/react-query';
-import customFetch from '../Components/utils';
-import Items from '../Components/Items';
-import { useFetchTasks } from '../Components/ReactQueryCustomHooks';
+import { redirect } from 'react-router-dom';
+import NewsletterList from '../Components/NewsletterList';
 
-const newsletterUrl = 'http://localhost:5000/api/tasks';
-
-export const action = async ({ request }) => {
-  const formData = await request.formData();
-  const data = Object.fromEntries(formData);
-
-  try {
-    const response = await axios.post(newsletterUrl, data);
-
-    toast.success(response.data.msg);
-    return redirect('/tasks');
-  } catch (error) {
+export const action =
+  (queryClient) =>
+  async ({ request }) => {    
+    const formData = await request.formData();
+    const {email} = Object.fromEntries(formData);    
+    try {
+      const response = await newsletterFetch.post(
+        '/', {email}           
+      )    
+      console.log(response);   
+      queryClient.removeQueries([FormInput])
+      toast.success('we have your mail now');      
+      return redirect('/newsletter');
+    }     
+ catch (error) {
     console.log(error);
-    toast.error(error?.response?.data?.msg);
-    return error;
+    const errorMessage =
+      error?.response?.data?.msg 
+      ||   'there was an error to send your email';
+    toast.error(errorMessage);
+    if (error?.response?.status === 401 || 403) return redirect('/newsletter');  
+    return null;
   }
-};
-// const localData = 
-// 'http://localhost:5000/api/tasks'
-// // "https://jsonplaceholder.typicode.com/comments"
-// // "../DATA/db.json"
-//  ;
-
-// export const loader = async ()=>{
-//   // const searchTerm="";
-//   // const response= await axios.get   (`${localData}`)
-//  const response = await customFetch.get('/')
- 
-//   ;
-//   console.log(response)
-//   return {items:response.data.taskList}
-// };
+  };
 
 const Newsletter = () => {
-    const navigation = useNavigation();
-    const isSubmitting = navigation.state === 'submitting';
-    const {data} = useFetchTasks()
-    console.log(data)
   return (
-    <>
-
-    <div>
-      
-    </div>
-    <Form className='form' method='POST'>
-      <h4 style={{ textAlign: 'center', marginBottom: '2rem' }}>
-        our newsletter
-      </h4>
-      {/* name */}
-      <div className='form-row'>
-        <label  className='form-label'>
-          title
-        </label>
-        <input
-          type='text'
-          className='form-input'
-          name='title'
-          id='title'
-          required
-        />
+    <>   
+  <div   className='mx-16 mt-16 grid gap-8  md:grid-cols-2 items-start '>   
+    <Form  method='POST'className='flex flex-col gap-y-4'>
+    <h3 className='font-medium font-bold text-4xl'>
+          Join to our newsletter
+        </h3>   
+       <div className='mt-4'>
+       <FormInput type='email' name='email'  label='email address'/>         
       </div>
-      {/* lastName */}
-      <div className='form-row'>
-        <label  className='form-label'>
-          autor
-        </label>
-        <input
-          type='text'
-          className='form-input'
-          name='author'
-          id='author'
-          required
-        />
-      </div>
-      {/* email */}
-      <div className='form-row'>
-        <label  className='form-label'>
-          email
-        </label>
-        <input
-          type='text'
-          className='form-input'
-          name='email'
-          id='email'
-          defaultValue='test@test.com'
-          required
-        />
-      </div>
-      <button
-        type='submit'
-        className='btn btn-block'
-        style={{ marginTop: '0.5rem' }}
-        disabled={isSubmitting}
-      >
-        {isSubmitting ? 'submitting' : 'submit'}
-      </button>
-      
-    </Form>
-    {/* <div>{data.data.length}</div> */}
-<Items/>
-</>
+      <SubmitBtn text='Submit'        
+         />
+    </Form>  
+    <div className='mt-14 text-center' ><h1 className='text-4xl font-bold leading-none tracking-tight sm:text-6xl mb-6 '>If you subscribe</h1><span className='text-2xl'>you will receive a</span> <div className='ml-2 stats bg-primary shadow'>
+          <div className='stat'>  <div className='stat-title text-primary-content text-4xl font-bold tracking-widest items-end'>10% off</div></div></div> </div>  
+              </div>  
+              <NewsletterList/>    
+           </>
   )
- 
-  
 }
-
 export default Newsletter
