@@ -32,6 +32,7 @@ import {loader as UserLoader} from'./Pages/Users';
 import {loader as SingleTasksLoader} from './Pages/ToDo';
 import {loader as ApiLoader} from './Pages/Api';
 import {loader as StatLoader} from './Pages/Stat';
+import {loader as newsletterLoader} from './Components/NewsletterList';
 
 //--------------Actions----------------------------
 import {action as UsersAction} from "./Pages/register";
@@ -100,8 +101,8 @@ const router = createBrowserRouter([
         {         
         path:'tasks',
         element: <Todos/>  ,
-        action:tasksAction,
-        loader:LocalLoader   , 
+        action:tasksAction(queryClient),
+        loader:LocalLoader(queryClient)   , 
         errorElement: ErrorElement,
         
       },
@@ -138,8 +139,10 @@ const router = createBrowserRouter([
       {
         path:'Newsletter',
         element:<Newsletter/>,
-        action:newsletterAction(queryClient),     
-        errorElement: ErrorElement,
+        errorElement: <ErrorElement/>, 
+        action:newsletterAction(queryClient),
+        loader:newsletterLoader(queryClient),     
+       
       },
       {
         path:'Stat',
