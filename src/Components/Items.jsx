@@ -1,8 +1,10 @@
 import { useFetchTasks } from './reactQueryCustomHooks';
-import { Link } from 'react-router-dom';
+import { Link,useLoaderData } from 'react-router-dom';
 import { useDeleteTask, useEditTask } from './reactQueryCustomHooks';
 
 const Items = () => {
+  const {items}=useLoaderData();
+  console.log(items);
   const { editTask } = useEditTask();
   const { deleteTask, deleteTaskLoading } = useDeleteTask();
   const { isLoading, isError, data } = useFetchTasks();
@@ -18,7 +20,8 @@ console.log(data)
     <>
  
     <div className='mt-8  mx-8 overflow-y-auto ' >
-    <div className='flex justify-center font-medium'>Your Tasks: {data.taskList.length}</div>
+    <div className='flex justify-center font-medium'>Your Tasks: {items.taskList.length}</div>
+    <div className='flex justify-center font-medium'>Your Tasks: {data.data.taskList.length}</div>
         <table className='w-full table '  >
         <thead >
             <tr className='border-current'>  
@@ -31,7 +34,7 @@ console.log(data)
             </tr>
           </thead>
      <tbody>
-        {data.taskList.map((item) => {  
+        {data.data.taskList.map((item) => {  
                      return (                     
                     <tr  key={item.id}>  
                     <td>
