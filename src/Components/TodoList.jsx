@@ -18,7 +18,7 @@ const TodoList = () => {
 
   return (
     <>
-    <div> info from TodoList</div>
+    <div className='flex justify-center mt-5 '> info from TodoList {items.taskList.length}</div>
     <div style={{marginTop:'4rem',width:"80vw",display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(300px, 1fr))",gap:'2rem' }}>
         {items.taskList.map((item) => {
     return (      

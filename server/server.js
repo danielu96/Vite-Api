@@ -1,33 +1,43 @@
+import * as dotenv from "dotenv";
+dotenv.config();
 import express from 'express';
 import cors from 'cors';
 import { nanoid } from 'nanoid';
+import mongoose from "mongoose";
 import morgan from 'morgan';
 import bearerToken from 'express-bearer-token';
+
+const app = express();
+
 import  userList  from '../src/Mocks/mockData.js';
+import newsletterRouter from './routes/newsletterRouter.js';
 
 import fs from 'fs/promises';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const dataFilePath = path.join(__dirname, 'tasks.json');
-const dataFilePathNewsletter = path.join(__dirname, 'newsletter.json');
+// const dataFilePathNewsletter = path.join(__dirname, 'newsletter.json');
 
-const readNewsletterFromFile = async () => {
-  try {
-    const data = await fs.readFile(dataFilePathNewsletter, 'utf8');
-    return JSON.parse(data);
-  } catch (error) {
-    console.error(error);
-    return [];
-  }
-};
-const writeNewsletterToFile = async (newsletter) => {
-  try {
-    await fs.writeFile(dataFilePathNewsletter, JSON.stringify(newsletter));
-  } catch (error) {
-    console.error(error);
-  }
-};
+// const readNewsletterFromFile = async () => {
+//   try {
+//     const data = await fs.readFile(dataFilePathNewsletter, 'utf8');
+//     return JSON.parse(data);
+//   } catch (error) {
+//     console.error(error);
+//     return [];
+//   }
+// };
+// const writeNewsletterToFile = async (newsletter) => {
+//   try {
+//     await fs.writeFile(dataFilePathNewsletter, JSON.stringify(newsletter));
+//   } catch (error) {
+//     console.error(error);
+//   }
+// };
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+}
 
 const readTasksFromFile = async () => {
   try {
@@ -47,8 +57,8 @@ const writeTasksToFile = async (tasks) => {
 };
 
 let taskList = await readTasksFromFile();
-let newsletterList = await readNewsletterFromFile();
-const app = express();
+// let newsletterList = await readNewsletterFromFile();
+
 import  jwt  from 'jsonwebtoken';
 let jobs = [
   { jobId: 1,id: nanoid(), position: 'engin',jobLocation:"Montreal",company:"Samsung",jobType:'part-time',status:"interview" },
@@ -69,24 +79,29 @@ app.use(bearerToken({
   cookie: false, // by default is disabled
 }));
 //------------------NEWSLETTER------------------------
-app.get('/api/newsletter', (req, res) => {
-  res.json({ newsletterList });
-});
-app.post('/api/newsletter', async (req, res) => {  
-  const { email } = req.body;
-  if ( !email) {
-    res.status(400).json({ msg: 'please provide value' });
-    return;
-  }
-  const newAddress = { id: nanoid(),email };
-  newsletterList = [...newsletterList, newAddress];
-  await writeNewsletterToFile(newsletterList);
-  res.json({ newsletter: newAddress, msg: 'sent successfully' });
-});
+
+app.use('/api/newsletter',newsletterRouter);
+
+// app.get('/api/newsletter', (req, res) => {
+//   // await readNewsletterFromFile(newsletterList);
+//   res.json({ newsletterList });
+// });
+// app.post('/api/newsletter', async (req, res) => {  
+//   const { email } = req.body;
+//   if ( !email) {
+//     res.status(400).json({ msg: 'please provide value' });
+//     return;
+//   }
+//   const newAddress = { id: nanoid(),email };
+//   newsletterList = [...newsletterList, newAddress];
+//   await writeNewsletterToFile(newsletterList);
+//   res.json({ newsletter: newAddress, msg: 'sent successfully' });
+// });
 
 //----------------- TASKS -----------------------------
 
-app.get('/api/tasks', (req, res) => {
+app.get('/api/tasks',async (req, res) => {
+  await readTasksFromFile(taskList);
   res.json({ taskList });
 });
 app.get('/api/tasks/:id', (req, res) => {
@@ -315,15 +330,26 @@ app.use((req, res) => res.status(404).send('Route does not exist'));
 
 const port = process.env.PORT || 5000;
 
-const startApp = () => {
-  try {
-    app.listen(port, () => {
-      console.log(`Server is listening on port ${port}...`);
-    });
-  } catch (error) {
-    console.log(error);
-    process.exit(1);
-  }
-};
+try {
+  await mongoose.connect(process.env.MONGO_URL);
+  app.listen(port ,()=>{
+      console.log(`server running yes... on PORTO ${port}`);
+  });
 
-startApp();
+} catch (error) {
+  console.log(error);
+  process.exit(1);
+}
+
+// const startApp = () => {
+//   try {
+//     app.listen(port, () => {
+//       console.log(`Server is listening on port ${port}...`);
+//     });
+//   } catch (error) {
+//     console.log(error);
+//     process.exit(1);
+//   }
+// };
+
+// startApp();
