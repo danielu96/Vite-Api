@@ -1,11 +1,24 @@
-import React from 'react'
-import  FormInput from '../Components/FormInput'
-import SubmitBtn from'../Components/SubmitBtn'
-import { Form } from 'react-router-dom';
+import React from 'react';
+import { redirect,Form } from 'react-router-dom';
+import  {FormInput,SubmitBtn} from '../Components';
 import { newsletterFetch } from '../UTILS/axios';
 import { toast } from 'react-toastify';
-import { redirect } from 'react-router-dom';
-import NewsletterList from '../Components/NewsletterList';
+import NewsletterList from '../Components/NewsletterList'
+
+
+export const newsletterQuery = (params) => {
+  return {
+    queryKey: [
+      'newsletter',
+            
+    ],
+    queryFn: () =>
+    newsletterFetch.get('/', {
+        params           
+      }),      
+  };  
+};
+
 
 export const action =
   (queryClient) =>
@@ -17,9 +30,11 @@ export const action =
         '/', {email}           
       )    
       console.log(response);   
-      queryClient.removeQueries([FormInput])
-      toast.success('we have your mail now');      
-      return redirect('/newsletter');
+      queryClient.removeQueries(['newsletter'])
+      // queryClient.invalidateQueries({ queryKey: ['newsletter'] });   
+      toast.success('we have your mail now'); 
+    
+      return redirect('/Newsletter');
     }     
  catch (error) {
     console.log(error);
@@ -31,7 +46,7 @@ export const action =
     return null;
   }
   };
-
+  
 const Newsletter = () => {
   return (
     <>   
@@ -41,7 +56,7 @@ const Newsletter = () => {
           Join to our newsletter
         </h3>   
        <div className='mt-4'>
-       <FormInput type='email' name='email'  label='email address'/>         
+       <FormInput type='email' name='email'  label='email address' />         
       </div>
       <SubmitBtn text='Submit'        
          />
