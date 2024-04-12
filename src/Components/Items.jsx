@@ -19,8 +19,7 @@ console.log(data)
   return (
     <>
  
-    <div className='mt-8  mx-8 overflow-y-auto ' >
-    <div className='flex justify-center font-medium'>Your Tasks: {items.taskList.length}</div>
+    <div className='mt-8  mx-8 overflow-y-auto ' >  
     <div className='flex justify-center font-medium'>Your Tasks: {data.data.taskList.length}</div>
         <table className='w-full table '  >
         <thead >
@@ -71,11 +70,6 @@ console.log(data)
             </tbody>
             </table>
         </div>
-    {/* <div >
-      {data.taskList.map((item) => {
-        return <SingleItem key={item.id} item={item} />;
-      })}
-    </div> */}
        
     </>
   );
