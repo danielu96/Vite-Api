@@ -17,24 +17,7 @@ import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const dataFilePath = path.join(__dirname, 'tasks.json');
-// const dataFilePathNewsletter = path.join(__dirname, 'newsletter.json');
 
-// const readNewsletterFromFile = async () => {
-//   try {
-//     const data = await fs.readFile(dataFilePathNewsletter, 'utf8');
-//     return JSON.parse(data);
-//   } catch (error) {
-//     console.error(error);
-//     return [];
-//   }
-// };
-// const writeNewsletterToFile = async (newsletter) => {
-//   try {
-//     await fs.writeFile(dataFilePathNewsletter, JSON.stringify(newsletter));
-//   } catch (error) {
-//     console.error(error);
-//   }
-// };
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
@@ -57,7 +40,6 @@ const writeTasksToFile = async (tasks) => {
 };
 
 let taskList = await readTasksFromFile();
-// let newsletterList = await readNewsletterFromFile();
 
 import  jwt  from 'jsonwebtoken';
 let jobs = [
@@ -82,22 +64,6 @@ app.use(bearerToken({
 
 app.use('/api/newsletter',newsletterRouter);
 
-// app.get('/api/newsletter', (req, res) => {
-//   // await readNewsletterFromFile(newsletterList);
-//   res.json({ newsletterList });
-// });
-// app.post('/api/newsletter', async (req, res) => {  
-//   const { email } = req.body;
-//   if ( !email) {
-//     res.status(400).json({ msg: 'please provide value' });
-//     return;
-//   }
-//   const newAddress = { id: nanoid(),email };
-//   newsletterList = [...newsletterList, newAddress];
-//   await writeNewsletterToFile(newsletterList);
-//   res.json({ newsletter: newAddress, msg: 'sent successfully' });
-// });
-
 //----------------- TASKS -----------------------------
 
 app.get('/api/tasks',async (req, res) => {
@@ -121,7 +87,7 @@ app.post('/api/tasks', async (req, res) => {
     res.status(400).json({ msg: 'please provide value' });
     return;
   }
-  const newTask = { id: nanoid(), title,author,email, isDone: true };
+  const newTask = { id: nanoid(), title,author,email, isDone: false };
   taskList = [...taskList, newTask];
   await writeTasksToFile(taskList);
   res.json({ task: newTask , msg: 'sent successfully'});
