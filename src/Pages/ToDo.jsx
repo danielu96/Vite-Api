@@ -1,6 +1,5 @@
-import {React,useState } from 'react'
+import {React } from 'react'
 import { useLoaderData , Link} from 'react-router-dom';
-import customFetch from '../Components/utils'
 import { tasksFetch } from '../UTILS/axios';
 
  const singleTaskQuery = (id) => {
@@ -23,9 +22,28 @@ const ToDo = () => {
   console.log(task)
   
   return (
-    <section>
-    <div className='text-md breadcrumbs'>
-      <ul>
+  <>
+  <div className='justify-center mx-auto'>  
+        <div className='mt-6 grid gap-y-10 lg:grid-cols-1  text-center  lg:gap-x-16 mx-auto'>   
+               <div>
+        <h4 className='capitalize text-xl font-bold'>author: {task.author}</h4>
+        <p className='mt-2 '>task: {task.title}</p>
+        <p className='mt-2 text-pretty'>email: {task.email}</p>    
+      <div className='mt-2'>status: <p  style={{          
+                  textTransform: 'capitalize',
+                  textDecoration: task.isDone && 'line-through',
+                }}>   {task.isDone ? 'done' : 'undone'} 
+   
+      </p>   
+        </div> 
+        <div className='mt-6'>               
+        </div>        
+        <div className='mt-10 '>         
+        </div>
+      </div>
+    </div>
+    <div className=' text-md breadcrumbs'>
+      <ul className='justify-center'>
         <li>
           <Link to='/'>Home</Link>
         </li>
@@ -34,18 +52,8 @@ const ToDo = () => {
         </li>
       </ul>
     </div>
-        <div className='mt-6 grid gap-y-8 lg:grid-cols-2  lg:gap-x-16'>   
-               <div>
-        <h4 className='capitalize text-3xl font-bold'>{task.author}</h4>
-        <p>{task.title}</p>
-        <p>{task.email}</p>      
-        <div className='mt-6'>               
-        </div>        
-        <div className='mt-10 '>        
-        </div>
-      </div>
     </div>
-  </section> 
+    </>
       )
 }
 
