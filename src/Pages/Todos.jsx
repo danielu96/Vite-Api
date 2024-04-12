@@ -6,8 +6,6 @@ import { Form,useNavigation,redirect } from 'react-router-dom'
 import FormInput from '../Components/FormInput';
 import Items from '../Components/Items';
 import customFetch from '../Components/utils';
-import TodoList from '../Components/TodoList';
-
 
 export const tasksQuery = (params) => {
   return {
@@ -16,8 +14,8 @@ export const tasksQuery = (params) => {
     ],
     queryFn: () =>
       customFetch.get('/', {
-        params,        
-            
+        params,     
+           
       }),      
   };  
 };
@@ -35,14 +33,13 @@ export const loader =
       );
 
       return {
-        items: response.data,
-        // totalMessages:response.data.totalMessages        
+        items: response.data             
       };
     } catch (error) {
       console.log(error);
       const errorMessage =
         error?.response?.data?.error?.message ||
-        'there was an error accessing your contact';
+        'there was an error accessing your tasks';
 
       toast.error(errorMessage);
       if (error?.response?.status === 401 || 403) return redirect('/tasks');
@@ -57,10 +54,9 @@ export const action =
 async ({ request }) => {
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
-
   try {
     const response = await axios.post(tasksUrl, data);
-    queryClient.removeQueries(['taskyos']); 
+    queryClient.removeQueries(['tasks']); 
     toast.success(response?.data?.msg);
     return redirect('/tasks');
   } catch (error) {
@@ -69,17 +65,6 @@ async ({ request }) => {
     return error;
   }
 };
-
-
-
-
-// const localData = 
-// 'http://localhost:5000/api/tasks' ;
-// export const loader = async ()=>{   
-//     const response= await axios.get   (`${localData}`);
-//     console.log(response)
-//     return {items:response.data}
-//   };
 const Todos = () => {  
   const navigation = useNavigation();
   const isSubmitting = navigation.state === 'submitting';  
@@ -88,7 +73,7 @@ const Todos = () => {
   return (
     <>
        <div className=' flex font-medium justify-center text-3xl mx-auto'>Tasks Maker</div>  
-    <div   className='mt-12 grid gap-8 md:grid-cols-2  mx-auto max-w-7xl'>   
+    <div   className='mt-12 grid gap-8 md:grid-cols-1  mx-auto max-w-xl'>   
     <Form method='POST' className='flex flex-col gap-y-4 '>
       <h4 className='mb-2 font-medium'>
       Create task
@@ -112,9 +97,7 @@ const Todos = () => {
     </Form>           
 </div> 
 <Items/> 
-<TodoList/>
  </>
   )
 }
-
 export default Todos
