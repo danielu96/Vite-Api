@@ -1,9 +1,7 @@
 import {
-  Login,
-  Apiks,
+  Login,  
   Home,
-  Newsletter,
-  List,
+  Newsletter,  
   Todos,
   ToDo,
   Test,
@@ -30,7 +28,6 @@ import {loader as SingleCoctaiLoader} from './Pages/Coctail';
 import {loader as LocalLoader} from'./Pages/Todos';
 import {loader as UserLoader} from'./Pages/Users';
 import {loader as SingleTasksLoader} from './Pages/ToDo';
-import {loader as ApiLoader} from './Pages/Api';
 import {loader as StatLoader} from './Pages/Stat';
 import {loader as newsletterLoader} from './Components/NewsletterList';
 
@@ -91,13 +88,7 @@ const router = createBrowserRouter([
         element: <Item/>  ,
         // loader:SingleItemLoader(queryClient),       
         
-      },
-      {
-        path:'List',
-        element: <List/> ,
-        errorElement: ErrorElement,     
-        
-      },
+      },     
         {         
         path:'tasks',
         element: <Todos/>  ,
@@ -129,13 +120,7 @@ const router = createBrowserRouter([
         element: <Coctail/>   , 
           loader:SingleCoctaiLoader(queryClient),
         
-      },   
-      {
-        path:'Apiks',
-        element:<Apiks/>,
-        loader: ApiLoader(queryClient),
-        errorElement: ErrorElement,
-      },
+      },      
       {
         path:'Newsletter',
         element:<Newsletter/>,

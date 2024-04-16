@@ -1,8 +1,6 @@
 export { default as Login } from './login';
-export { default as Apiks } from './Api';
 export { default as Home } from './Home';
 export { default as Newsletter } from './Newsletter';
-export { default as List } from './List';
 export { default as Todos } from './Todos';
 export { default as ToDo } from './ToDo';
 export { default as Test } from './Test';

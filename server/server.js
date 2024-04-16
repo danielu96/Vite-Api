@@ -124,24 +124,7 @@ app.get('/api/users/:id', (req, res) => {
   }
   res.status(200).json({user})
 });
-// app.get('/api/users/:id', (req, res) => {
-//   const { id } = req.params;   
-// const singleUser = userList.find(
-//   (user)=> user.id===Number(user.id)
-//   )
-// if(!singleUser){
-//   return res.status(404).send('not exist')
-// }
-// return res.json(id,singleUser)
-// })
-  // userList = userList.find((user) => {
-  //   if (user.id === id) {
-  //     return { ...user};
-  //   }
-  //   return user;
-  // });
-//   res.json({ id,user});
-// });
+
 app.post('/api/users', (req, res) => {
   const { name } = req.body;
   const { password } = req.body;
@@ -167,49 +150,17 @@ app.patch('/api/users/auth/updateUser', (req, res) => {
   userList = [...userList, newUser];
   res.json({ user: newUser });
 });
-app.post('/api/users/auth/login', (req, res) => {
-  // const data =[ user={ id: nanoid(), password,email }];
-// data= jobs;
-  // data = jobs.map((job,id) => {
-  //    {
-  //     return <div key={id} {...job }/>;
-  //   }
-  //   // return jobs;
-  // });
-  //  const {email,password}=req.body;
+app.post('/api/users/auth/login', (req, res) => {  
   const { name } = req.body;
   const { password } = req.body;
   const { email } = req.body;
   const user = { id: nanoid(), password,email,name };
   if (user) return res.status(200).json(`welcome from backend ${user.name}`)
- 
-  // // (!email && !password) return res.status(400).json({'message':'fill it'})
-  else {
+    else {
     return res.status(400).send(`fuck off ${email}`)
     // res.json({ jobs}) ;
    }
-  // res.status(200).send(`welcone ${user}`)
-  // const user={
-  //   id:nanoid(),
-  //   email:'daniel@wp.pl',
-  //   password:'123',
-  //   name:'danielko',
-  // // token: bearerToken,
-
-  // }
-  // jwt.sign({user},'secretkey',(err,token)=>{
-    
-    // res.json({jobs,defaultStats})
-  // })
-  // res.json({ jobs,user,defaultStats}) ;
-  //  ; 
-//   if (user) return res.status(200).json(`welcome`)
-//   else {
-// return res.status(400).send(`fuck ${email}`)
-//   }
-
-
-}
+  }
 )
 ;
 app.post('/api/users/auth/register', (req, res) => {
