@@ -23,11 +23,11 @@ const User = () => {
     const { user}=useLoaderData();  
   return (
     <Wrapper>
-    <div className='card'>    
+    <div className='place-items-center justify-center text-center'>    
         <p>{user.email}</p> 
         <h1>{user.name}</h1>  
-        <span>{user.lastName}</span>
-        <p>{user.location}</p>
+        {/* <span>{user.lastName}</span> */}
+        {/* <p>{user.location}</p> */}
 
        <p>< Link to={'/users'} >back</Link></p>  
          </div>

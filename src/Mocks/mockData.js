@@ -3,7 +3,7 @@ import { nanoid } from 'nanoid';
   const  userList = [
       {
         id: nanoid(),
-        password: "123",
+        password: "dlaczgo to tak ...",
         name: "Daniel",
         lastName: "Kartkowski",
         location: "Wasabi",
@@ -11,7 +11,7 @@ import { nanoid } from 'nanoid';
       },
       {
         id:nanoid(),
-        password: "pa213",
+        password: "tak tak dlaczego ...",
         name: "Paul",
         lastName: "Polowski",       
         location: "San Paulo",
@@ -19,7 +19,7 @@ import { nanoid } from 'nanoid';
       },
       {
         id: nanoid(),
-        password: "r098",
+        password: "english please ...",
         name: "Raulo",
         lastName: "Raulenios", 
         location: "RaulosTown",
@@ -27,11 +27,27 @@ import { nanoid } from 'nanoid';
       },
       {
         id: nanoid(),
-        password: "j456",
+        password: "yes english bitte ...",
         name: "John",
         lastName: "Johnas", 
         location: "JohnTown",
         email: "john@jp.pl"
-      }
+      },
+      {
+        id: nanoid(),
+        password: "j prefer maybe i dont know really",
+        name: "Aga",
+        lastName: "Agasii", 
+        location: "AgasTown",
+        email: "aga@aga.pl"
+      },
+      {
+        id: nanoid(),
+        password: "ok i tell you what ...",
+        name: "Danka",
+        lastName: "Kartkowska",
+        location: "Danice",
+        email: "dana@da.pl"
+      },
     ]
   export default userList

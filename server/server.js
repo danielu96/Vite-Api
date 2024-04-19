@@ -11,6 +11,7 @@ const app = express();
 
 import  userList  from '../src/Mocks/mockData.js';
 import newsletterRouter from './routes/newsletterRouter.js';
+import userRouter from './routes/userRouter.js'
 
 import fs from 'fs/promises';
 import path, { dirname } from 'path';
@@ -64,6 +65,7 @@ app.use(bearerToken({
 
 app.use('/api/newsletter',newsletterRouter);
 
+
 //----------------- TASKS -----------------------------
 
 app.get('/api/tasks',async (req, res) => {
@@ -111,19 +113,9 @@ app.delete('/api/tasks/:id', async (req, res) => {
   await writeTasksToFile(taskList);
   res.json({ msg: 'task removed' });
 });
-//-------------------------------------------------------------------------
-// USERS STARTS
-app.get('/api/users', (req, res) => {
-  res.json({ userList});
-});
-app.get('/api/users/:id', (req, res) => {
-  const { id } = req.params;
-  const user = userList.find((user)=> user.id ===id);
-  if (!user){
-    return res.status(404).json({msg:`no user ${id}`});
-  }
-  res.status(200).json({user})
-});
+// ------------------USERS -----------------------------
+app.use('/api/users',userRouter);
+
 
 app.post('/api/users', (req, res) => {
   const { name } = req.body;
@@ -188,8 +180,11 @@ app.delete('/api/users/:id', (req, res) => {
   const { id } = req.params;
   userList = userList.filter((user) => user.id !== id);
 
-  res.json({ msg: 'task removed' });
+  res.json({ msg: 'user removed' });
 });
+
+
+
 app.patch('/api/users/:id', (req, res) => {
   const { id } = req.params;
   const { name } = req.body; 

@@ -60,17 +60,20 @@ const router = createBrowserRouter([
       {
         path:'comments',
         element:<NewUser/>,
+        errorElement: <ErrorElement/>,
         // loader:UserLoader   , 
       },     
      
       {
         path:'users',
         element:<Users/>,
-        loader:UserLoader   , 
+        errorElement: <ErrorElement/>,
+        loader:UserLoader(queryClient)   , 
       },
       {
         path:'users/:id',
         element: <User/>   , 
+        errorElement: <ErrorElement/>,
            loader:SingleUserLoader(queryClient), 
         
       },
