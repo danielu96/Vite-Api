@@ -18,7 +18,7 @@ export function NewUserDetail({ user }) {
   );
  
   if (isLoading) {
-    return <h3>Loading!</h3>;
+    return <p className='text-center mt-6'>Loading!</p>;
   }
 
   if (isError) {
@@ -31,12 +31,12 @@ export function NewUserDetail({ user }) {
   }
   return (
     <>
-      <h3 style={{ color: "blue" }}>{user.name}</h3>        
-      
-           <h4>Info about User</h4>     
-      <p>user number: {user.id}</p>
-      <p>user email: {user.email}</p>
-      <p>user password: {user.password}</p>
+    <div className='w-auto ml-2'>
+      <h3 style={{ color: "blue", marginTop:"2rem",marginBottom:"2rem" }}>{user.name}</h3>       
+                
+          <p>email: {user.company}</p>
+      <p>comment: {user.position}</p>
+      <div className='mt-7'>
       <button style={{width:"4rem"}}       
         type='button'     
         onClick={() => deleteUser(user.id)}
@@ -47,8 +47,10 @@ export function NewUserDetail({ user }) {
         type='button'       
         onClick={() => editUser(user.id)}
       >
-        update title
+        update
       </button>
+      </div>
+      </div>
     </>
   );
 }
