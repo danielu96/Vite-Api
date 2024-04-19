@@ -13,7 +13,7 @@ export const tasksFetch = axios.create({
   baseURL:  'http://localhost:5000/api/tasks/'  
 });
 export const usersFetch = axios.create({ 
-  baseURL:  'http://localhost:5000/api/users/'   
+  baseURL:  'http://localhost:5000/api/'   
 });
 export const newsletterFetch = axios.create({ 
   baseURL:  'http://localhost:5000/api/newsletter/'   
