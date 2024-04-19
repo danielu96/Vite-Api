@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 const Wrapper = styled.div`
 .card{
-width:auto;
-  display: grid;
+width:60%;
+  display: flex;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  justify-center;
   gap: 2rem;
   border:1px solid;
   padding:10px;
