@@ -1,15 +1,19 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLoaderData } from 'react-router-dom';
 import Wrapper from '../assets/wrappers/todoCard'
 
-const TodoCard = ({id,email,password,name}) => {
+
+
+const UserCard = ({id,email,name}) => {
+  const {item}= useLoaderData();
   return (
     <Wrapper>
       <div className='card'>
     <h5> {name}</h5> 
     <p>{email}</p>
-    <p>{password}</p>
+    {/* <p>{password}</p> */}
     <Link 
+    //  key={user.id}
     to={`/users/${id}`}
     // to={`/${title}`}
     >details</Link>
@@ -18,4 +22,4 @@ const TodoCard = ({id,email,password,name}) => {
   )
 }
 
-export default TodoCard
+export default UserCard
