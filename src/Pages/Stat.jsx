@@ -35,24 +35,26 @@ const Stat = () => {
     console.log(jobsData)
   return (
     <>   
-    <div style={{ display:"flex", gap:"3rem",padding:"2rem",textAlign: 'center', marginTop: '-6rem' }}>   
-    <div  className="stat place-items-center" >
-      <div className="stat-title" >New jobs</div>
-      <div style={{marginTop:"1rem"}}>{jobsData.length}      
+    <div className='pt-12 grid  md:grid-cols-3 lg:grid-cols-3'
+    // style={{ display:"flex", gap:"3rem",padding:"2rem",textAlign: 'center', marginTop: '-6rem' }}
+    >   
+    <div className="stat place-items-center">
+      <div className="stat-title font-bold text-primary" >New jobs</div>
+      <div className='font-bold' >{jobsData.length}      
         </div>
-      {/* <div className="stat-desc">From January</div> */}
+      <div className="stat-desc text-primary">From January</div>
     </div>
     <div className="stat place-items-center" >
-      <div className="stat-title">Users</div>
-      <div style={{marginTop:"1rem"}}>  {usersData.length} 
+      <div className="stat-title font-bold text-secondary">Users</div>
+      <div className='font-bold'>  {usersData.length} 
                 </div>
-      {/* <div className="stat-desc text-secondary">↗︎ 40 (2%)</div> */}
+      <div className="stat-desc text-secondary">↗︎ 40 (2%)</div>
     </div>  
     <div className="stat place-items-center" >
-      <div className="stat-title"> Tasks</div>
-      <div style={{marginTop:"1rem"}}>{tasksData.length}       
+      <div className="stat-title font-bold text-primary"> Tasks</div>
+      <div className='font-bold'>{tasksData.length}       
         </div>
-      {/* <div className="stat-desc">↘︎ 90 (14%)</div> */}
+      <div className="stat-desc text-primary">↘︎ 90 (14%)</div>
     </div>   
     </div>
     </>
