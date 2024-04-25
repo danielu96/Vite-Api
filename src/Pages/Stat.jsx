@@ -7,7 +7,7 @@ const TasksQuery = {
   };
   const UsersQuery = {
     queryKey: ['allUsers'],
-    queryFn: () => usersFetch.get('/'),
+    queryFn: () => usersFetch.get('/users'),
   };
   const JobsQuery = {
     queryKey: ['allJobs'],
@@ -19,7 +19,7 @@ const TasksQuery = {
     const tasksData = tasksResponse.data.taskList;
   
     const usersResponse = await queryClient.ensureQueryData(UsersQuery);
-    const usersData = usersResponse.data.userList;
+    const usersData = usersResponse.data.data;
   
     const jobsResponse = await queryClient.ensureQueryData(JobsQuery);
     const jobsData = jobsResponse.data.jobs;
