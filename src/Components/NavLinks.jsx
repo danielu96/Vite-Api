@@ -3,7 +3,7 @@ const links = [
     { id: 1, url: '/', text: 'home' },
     { id: 2, url: 'login', text: 'login' },
     { id: 3, url: 'users', text: 'users' },
-    { id: 4, url: 'comments', text: 'comments' },
+    { id: 4, url: 'jobs', text: 'jobs' },
     { id: 5, url: 'tasks', text: 'tasks' },
     { id: 6, url: 'test', text: 'test' },   
     { id: 7, url: 'newsletter', text: 'newsletter' },
