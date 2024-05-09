@@ -1,71 +1,56 @@
-// import { useSelector,useDispatch } from 'react-redux'
-import { useEffect, useState } from "react";
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import React, { useEffect, useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { NewUserDetail } from "./newUserDetail";
-// import Pagination from "../../Components/Pagination";
-// import ReactPaginate from 'react-paginate';
-const maxPostPage = 4;
 
-async function fetchPosts(pageNum) {
+
+const maxPostPage = 3;
+
+async function fetchPosts(pageNum) { 
   const response = await fetch(
-     `http://localhost:5000/api/jobs?${pageNum}`
-  );
+    `http://localhost:5000/api/jobs?page=${pageNum}`
+     );
   return response.json();
 }
 
 export function NewUser() {
-  // const  userList = useSelector((state) => state.userList);
-  // const [currentItems, setCurrentItems] = useState([]); 
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedUser, setSelectedUser] = useState(null);
-  // const [pageCount, setPageCount] = useState(0);
-  // const [itemOffset, setItemOffset] = useState(0);
-  // const itemsPerPage = 3;
-
+  const [selectedUser, setSelectedUser] = useState([]);
   const queryClient = useQueryClient();
-
-  // const handlePageClick = (event) => {
-  //   const newOffset = (event.selected * itemsPerPage) %
-  //     userList.length;
-  //   console.log(
-  //     `User requested page number ${event.selected}, which is offset ${newOffset}`
-  //   );
-  //   setItemOffset(newOffset);
-  // }; 
-
-
-  // useEffect(() => {
-  //   if (currentPage < maxPostPage) {
-  //     const nextPage = currentPage + 1;
-  //     queryClient.prefetchQuery(["users", nextPage], () =>
-  //       fetchPosts(nextPage)
-  //     );
-  //   }
-  // }, [currentPage, queryClient]);
-  // useEffect(() => {    
-  //   const endOffset = itemOffset + itemsPerPage;
-  //   setCurrentItems(data.userList.slice(itemOffset, endOffset));
-  //   setPageCount(Math.ceil(userList.length / itemsPerPage));
-  // }, [itemOffset, itemsPerPage
-    
-  // ]);
-
-
-  useEffect(() => {
-  const nextPage = currentPage + 1;
-  if (nextPage <= maxPostPage) {
-    queryClient.prefetchQuery(["users", nextPage], () => fetchPosts(nextPage));
-  }
-}, [currentPage, queryClient]);
+  const [autoPageSwitch, setAutoPageSwitch] = useState(false);  
 
   const { data, isError, error, isLoading } = useQuery(
     ["users", currentPage],
     () => fetchPosts(currentPage),
+    console.log(currentPage),
     {
       staleTime: 200,
       keepPreviousData: true,
     }
   );
+
+  useEffect(() => {
+    const nextPage = currentPage + 1;
+    if (nextPage <= maxPostPage && autoPageSwitch) {
+      // Prefetch next page and update current page after a delay
+      queryClient.prefetchQuery(["users", nextPage], () => fetchPosts(nextPage));
+      setTimeout(() => setCurrentPage(currentPage + 1), 2000); // Adjust delay as needed
+    }
+
+    // Re-render when data or autoPageSwitch changes
+  }, [currentPage, queryClient, data, autoPageSwitch]);
+
+  useEffect(() => {
+    const nextPage = currentPage + 1;
+    if (nextPage <= maxPostPage) {
+      queryClient.prefetchQuery(["users", nextPage], () => fetchPosts(nextPage));
+    }
+
+    // Re-render the component when data for the next page is fetched
+    if (data && data.jobs && data.jobs.length > 0) {
+      setCurrentPage(currentPage);
+    }
+  }, [currentPage, queryClient, data]);
+
   if (isLoading) return <h3>Loading...</h3>;
   if (isError)
     return (
@@ -77,65 +62,59 @@ export function NewUser() {
 
   return (
     <>
-    <div className="-mt-4 grid grid-cols-2 mx-5 border-solid border-2 w-auto">
-      <div className="ml-20 ">
-   <h1 className="mb-5 font-bold"   >USERS</h1> 
-      <ul className="cursor-pointer">
-        {data.jobs.map((user) => (
-          <li className="hover:font-medium hover:text-primary"
-            key={user.id}
-          
-            onClick={() => setSelectedUser(user)}
-          >
-          name:  {user.jobType}     
-          </li>
-          
-        ))}
-      </ul>
-      
-      <div className="pages mx-auto my-3">
-        <button
-          disabled={currentPage <= 1}
-          onClick={() => {
-            setCurrentPage((previousValue) => previousValue - 1);
-          }}
-        >
-          Prev
-        </button>
-        <span className="font-bold"> {currentPage} </span>
-        <button
-          disabled={currentPage >= maxPostPage}
-          onClick={() => {
-            setCurrentPage((previousValue) => previousValue + 1);
-          }}
-        >
-           Next
-        </button>
+      <div className="-mt-4 mx-5 grid md:grid-cols-2 lg:grid-cols-2 border-solid border-2 w-auto">
+        <div className="ml-20">
+          <h1 className="mb-5 font-bold">USERS</h1>
+          <ul className="cursor-pointer">
+            {data && data.jobs && data.jobs.map((user) => (
+              <li
+                className="hover:font-medium hover:text-primary"
+                key={user.id}
+                onClick={() => setSelectedUser(user)}
+              >
+                name: {user.name}
+              </li>
+            ))}
+          </ul>
+         
+          <PaginationControls
+            currentPage={currentPage}
+            maxPostPage={maxPostPage}
+            setCurrentPage={setCurrentPage}
+          />
 
-      </div>
-      {/* <Pagination/> */}
-      </div>
-      {/* <div style={{paddingLeft:'0rem'}}>
-      <ReactPaginate
-        breakLabel="..."
-        nextLabel="next >"
-        onPageChange={handlePageClick}
-        pageRangeDisplayed={5}
-        pageCount={pageCount}
-        previousLabel="< prev"
-        renderOnZeroPageCount={null}
-        containerClassName={"pagination"}
-        pageLinkClassName={"page-num"}
-        previousLinkClassName={"page-num"}
-        nextLinkClassName={"page-num"}
-        disabledClassName={"disabled"}
-        activeClassName={"active"}
+          <div className="pages mx-auto my-3">
+            <label className="ml-3">
+              Auto Switch:
+              <input
+                type="checkbox"
+                checked={autoPageSwitch}
+                onChange={(e) => setAutoPageSwitch(e.target.checked)}
+              />
+            </label>
+          </div>
+        </div>
 
-      />
-      </div> */}
-     
-      {selectedUser && <NewUserDetail user={selectedUser} />}
+        {selectedUser && <NewUserDetail user={selectedUser} />}
       </div>
     </>
   );
 }
+
+const PaginationControls = ({ currentPage, maxPostPage, setCurrentPage }) => (
+  <div className="pages mx-auto my-3">
+    <button
+      disabled={currentPage <= 1}
+      onClick={() => setCurrentPage(currentPage - 1)}
+    >
+      Prev
+    </button>
+    <span className="font-bold"> {currentPage} </span>
+    <button
+      disabled={currentPage >= maxPostPage}
+      onClick={() => setCurrentPage(currentPage + 1)}
+    >
+      Next
+    </button>
+  </div>
+);
