@@ -58,7 +58,7 @@ const router = createBrowserRouter([
     children:[
        
       {
-        path:'comments',
+        path:'jobs',
         element:<NewUser/>,
         errorElement: <ErrorElement/>,
         // loader:UserLoader   , 

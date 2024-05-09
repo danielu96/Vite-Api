@@ -12,6 +12,7 @@ const app = express();
 import  userList  from '../src/Mocks/mockData.js';
 import newsletterRouter from './routes/newsletterRouter.js';
 import userRouter from './routes/userRouter.js'
+import jobsRouter from './routes/jobsRouter.js'
 
 import fs from 'fs/promises';
 import path, { dirname } from 'path';
@@ -43,11 +44,7 @@ const writeTasksToFile = async (tasks) => {
 let taskList = await readTasksFromFile();
 
 import  jwt  from 'jsonwebtoken';
-let jobs = [
-  { jobId: 1,id: nanoid(), position: 'engin',jobLocation:"Montreal",company:"Samsung",jobType:'part-time',status:"interview" },
-  { jobId: 2,id: nanoid(), position: 'monter',jobLocation:"Maiami",company:"Manta",jobType:'full-time',status:"pending" },
- { jobId: 3,id: nanoid(), position: 'kasier',jobLocation:"walia",company:"Unitra",jobType:'part-time',status:"interview" }
-];
+
 
 if (process.env.NODE_ENV !== 'production') {
   app.use(morgan('dev'));
@@ -153,8 +150,7 @@ app.post('/api/users/auth/login', (req, res) => {
     // res.json({ jobs}) ;
    }
   }
-)
-;
+);
 app.post('/api/users/auth/register', (req, res) => {
   
   const { name } = req.body;
@@ -182,9 +178,6 @@ app.delete('/api/users/:id', (req, res) => {
 
   res.json({ msg: 'user removed' });
 });
-
-
-
 app.patch('/api/users/:id', (req, res) => {
   const { id } = req.params;
   const { name } = req.body; 
@@ -196,46 +189,8 @@ app.patch('/api/users/:id', (req, res) => {
   });
   res.json({ msg: 'task updated' });
 });
-//-------------------------------------------------------------------------
-// JOBS STARTS
-app.get('/api/jobs', (req, res) => {
-  res.json({ jobs});
-});
-app.get('/api/jobs/allJobs/getJobs', (req, res) => {
-  res.json({ jobs}); 
-});
-app.get('/api/jobs/stats', (req, res) => { 
-  res.json(defaultStats); 
-});
-app.delete('/api/jobs/:id', (req, res) => {
-  const { id } = req.params;
-  jobs = jobs.filter((job) => job.id !== id);
-  res.json({ msg: 'job removed',jobs });
-}); 
-app.post('/api/jobs', (req, res) => {  
-  const { position } = req.body;
-  const { company } = req.body;
-  const { jobLocation,jobType,status } = req.body;
-  if ( !position && !company && !jobLocation) {
-    res.status(400).json({ msg: 'please provide value' });
-    return;
-  }
-  const newJob = { id: nanoid(), position,company,jobLocation,jobType,status };
-  jobs = [...jobs, newJob];
-  res.json({ job: newJob });
-});
-app.patch('/api/jobs/editJob', (req, res) => {  
-  const { position } = req.body;
-  const { company } = req.body;
-  const { jobLocation,jobType,status } = req.body;
-  if ( !position && !company && !jobLocation) {
-    res.status(400).json({ msg: 'please provide value' });
-    return;
-  }
-  const newJob = { id: nanoid(), position,company,jobLocation,jobType,status };
-  jobs = [...jobs, newJob];
-  res.json({ job: newJob });
-});
+//---------------------------JOBS ---------------------------------------
+app.use('/api/jobs',jobsRouter);
 //----------------------------------------------------------------------------
 
 app.use((req, res) => res.status(404).send('Route does not exist'));

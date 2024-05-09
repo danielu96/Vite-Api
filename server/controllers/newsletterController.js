@@ -24,4 +24,23 @@ export const getAllNewsletter= async (req,res)=>{
   let data = await result   
     res.status(200).json({data,totalMessages});
   };
-
+  export const deleteAddress = async (req,res)=> {  
+    const {id} =req.params;
+   const removedAddress = await Newsletter.findByIdAndDelete(id)
+   res.status(StatusCodes.OK).json({msg:'deleted this address',address:removedAddress});
+  };
+  export const deleteAllAddresses = async (req, res) => {
+    try {
+      // Delete all addresses using `deleteMany`
+      const deletedCount = await Newsletter.deleteMany({});
+  
+      res.status(StatusCodes.OK).json({
+        msg: `Successfully deleted ${deletedCount} addresses`,
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        error: "Failed to delete addresses",
+      });
+    }
+  };
