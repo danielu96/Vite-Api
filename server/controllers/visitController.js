@@ -1,4 +1,4 @@
-import Visit from "../Models/VisitModel";
+import Visit from "../models/VisitModel";
 
 
 export const getCalendar = async (req,res)=> {
