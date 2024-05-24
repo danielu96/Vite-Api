@@ -8,6 +8,9 @@ const links = [
     { id: 6, url: 'test', text: 'test' },   
     { id: 7, url: 'newsletter', text: 'newsletter' },
     { id: 8, url: 'stat', text: 'stat' },
+    { id: 9, url: 'calendar', text: 'calendar' },
+    { id: 10, url: 'appointments', text: 'appointments' },
+    { id: 11, url: 'visits', text: 'visits' },
   ];
   
   

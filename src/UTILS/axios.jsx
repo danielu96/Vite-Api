@@ -18,6 +18,9 @@ export const usersFetch = axios.create({
 export const newsletterFetch = axios.create({ 
   baseURL:  'http://localhost:5000/api/newsletter/'   
 });
+export const appointmentsFetch = axios.create({ 
+  baseURL:  'http://localhost:5000/api/appointments/'   
+});
 
 
 // customFetch.interceptors.request.use((config) => {

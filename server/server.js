@@ -13,6 +13,8 @@ import  userList  from '../src/Mocks/mockData.js';
 import newsletterRouter from './routes/newsletterRouter.js';
 import userRouter from './routes/userRouter.js'
 import jobsRouter from './routes/jobsRouter.js'
+import appointmentRouter from './routes/appointmentRouter.js'
+
 
 import fs from 'fs/promises';
 import path, { dirname } from 'path';
@@ -61,6 +63,11 @@ app.use(bearerToken({
 //------------------NEWSLETTER------------------------
 
 app.use('/api/newsletter',newsletterRouter);
+
+//------------APPOINTMENTS----------------------------
+
+app.use('/api/appointments',appointmentRouter);
+
 
 
 //----------------- TASKS -----------------------------

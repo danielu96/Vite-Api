@@ -9,7 +9,9 @@ import {
   User,
   Users,
   Coctail,
-  Stat
+  Stat,
+  Calendar
+  
 } from './Pages'
 
 import Item from './Item';
@@ -30,6 +32,8 @@ import {loader as UserLoader} from'./Pages/Users';
 import {loader as SingleTasksLoader} from './Pages/ToDo';
 import {loader as StatLoader} from './Pages/Stat';
 import {loader as newsletterLoader} from './Components/NewsletterList';
+import {loader as AppointmentLoader} from './Pages/RESERVATION/Appointment'
+import {loader as AppointmentDetailLoader} from './Pages/RESERVATION/AppointmentDetail'
 
 //--------------Actions----------------------------
 import {action as UsersAction} from "./Pages/register";
@@ -41,6 +45,10 @@ import {action as tasksAction} from './Pages/Todos'
 import { createBrowserRouter ,RouterProvider} from "react-router-dom";
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'; 
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import Appointment from './Pages/RESERVATION/Appointment';
+import AppointmentDetail from './Pages/RESERVATION/AppointmentDetail';
+// import NoAppointment from './Pages/RESERVATION/NoAppointment';
+import  Visit  from './Pages/VISITS/visit';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -63,13 +71,45 @@ const router = createBrowserRouter([
         errorElement: <ErrorElement/>,
         // loader:UserLoader   , 
       },     
-     
+      {
+        path:'calendar',
+        element:<Calendar/>,
+        errorElement: <ErrorElement/>       
+      }, 
+      {
+        path:'appointments',
+        element:<Appointment/>,
+        errorElement: <ErrorElement/>  ,
+         loader:AppointmentLoader(queryClient)   ,     
+      }, 
+      {
+       
+         path:"/appointments/:id" ,
+        element:<AppointmentDetail 
+        // selectedDate={selectedDate}
+         /> ,      
+        errorElement: <ErrorElement/>,
+           loader:AppointmentDetailLoader(queryClient), 
+        
+      },
+      // {
+      //   path: '/appointments/:date',
+      //   errorElement: <ErrorElement/>,
+      //   element: <NoAppointment />, // Add route for NoAppointment page
+      // },
+      {
+        path:'visits',
+        element:<Visit/>,
+        errorElement: <ErrorElement/>  ,
+        //  loader:AppointmentLoader(queryClient)   ,     
+      }, 
       {
         path:'users',
         element:<Users/>,
         errorElement: <ErrorElement/>,
         loader:UserLoader(queryClient)   , 
       },
+
       {
         path:'users/:id',
         element: <User/>   , 

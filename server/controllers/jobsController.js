@@ -25,6 +25,9 @@ const writeJobsToFile = async (jobs) => {
 
 let jobs = await readJobsFromFile();
 
+
+
+
 export const getAllJobs = async  (req, res) => {
     const page = Number(req.query.page) || 1;
      const limit = parseInt(req.query.limit) || 3;
@@ -67,7 +70,7 @@ export const getAllJobs = async  (req, res) => {
 
       export const EditJob = async (req, res) => {
         // 1. Extract job data from request body
-        const { position, company, jobLocation, jobType, status, name, comment } = req.body;
+        const { position, company, jobLocation, jobType, status, name, comment, date } = req.body;
       
         // 2. Validate input (same as original code)
         if (!position && !company && !jobLocation) {
@@ -95,6 +98,7 @@ export const getAllJobs = async  (req, res) => {
           status,
           name,
           comment,
+          date
         };
       
         // 6. Update the jobs array (efficient in-place update)
@@ -105,6 +109,10 @@ export const getAllJobs = async  (req, res) => {
       
         // 8. Send a successful response with the updated job
         res.json({ job: updatedJob, msg: 'Job updated successfully' });
+      };
+      export const getForReservation = async (req, res) => {
+        await readJobsFromFile(jobs);
+        res.json({ jobs });
       };
 
    
