@@ -14,6 +14,7 @@ import newsletterRouter from './routes/newsletterRouter.js';
 import userRouter from './routes/userRouter.js'
 import jobsRouter from './routes/jobsRouter.js'
 import appointmentRouter from './routes/appointmentRouter.js'
+import visitRouter from './routes/visitRouter.js'
 
 
 import fs from 'fs/promises';
@@ -67,6 +68,10 @@ app.use('/api/newsletter',newsletterRouter);
 //------------APPOINTMENTS----------------------------
 
 app.use('/api/appointments',appointmentRouter);
+
+//------------VISITS----------------------------
+
+app.use('/api/visits',visitRouter);
 
 
 
