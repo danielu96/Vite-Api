@@ -5,8 +5,11 @@ import { TiArrowLeftThick, TiArrowRightThick } from "react-icons/ti";
 import { useLoaderData } from 'react-router-dom';
 import  DateBox  from "./DateBox";
 import { useAppointments } from "./Hooks/useAppointments.jsx";
+import { toast } from 'react-toastify';
+import { redirect } from 'react-router-dom';
 
-import { appointmentsFetch } from '../../UTILS/axios';
+// import { appointmentsFetch } from '../../UTILS/axios';
+import { visitsFetch } from '../../UTILS/axios'
   const url = '/';
 
 const visitsQuery = (queryParams) => {
@@ -16,7 +19,7 @@ const visitsQuery = (queryParams) => {
       'visits'          
     ],
     queryFn: () =>
-    appointmentsFetch(url, {
+    visitsFetch(url, {
         params: queryParams,
       }),
   };
@@ -37,6 +40,36 @@ export const loader =
     return { data};
     
   };
+  export const action =
+  (queryClient) =>
+  async ({ request }) => {    
+    const formData = await request.formData();
+    const {author,date,time} = Object.fromEntries(formData);    
+    // const {date} = Object.fromEntries(formData);   
+    try {
+      const response = await visitsFetch.post(
+        '/', {author,date,time}         
+      )    
+      console.log(response);   
+      queryClient.removeQueries(['visits'])
+      // queryClient.invalidateQueries({ queryKey: ['newsletter'] });   
+      toast.success('we have your mail now'); 
+    
+      return redirect('/visits');
+    }     
+ catch (error) {
+    console.log(error);
+    const errorMessage =
+      error?.response?.data?.msg 
+      ||   'there was an error to send your email';
+    toast.error(errorMessage);
+    if (error?.response?.status === 401 || 403) return redirect('/');  
+    return null;
+  }
+  };
+
+
+
 
  const Visit = () =>{ 
   const {data: appointments}=useLoaderData();  
@@ -93,14 +126,13 @@ export const loader =
         {[...Array(monthYear.lastDate)].map((_, i) => {
           const currentDate = dayjs(`${monthYear.year}-${monthYear.month}-${i + 1}`);
       
-          const hasAppointment = (day, appointments) => { // Pass appointments as argument
+          const hasAppointment = (day) => {
             const currentDate = dayjs(`${monthYear.year}-${monthYear.month}-${day}`); // Create dayjs object in UTC
-            const appointmentForDay = appointments.find(appointment => { // Find appointment for current date
-              return dayjs.utc(appointment.date).isSame(currentDate, 'day'); // Check if dates match
-            });
-          
-            return !!appointmentForDay; // Return true if appointment found, false otherwise
+            const appointmentsForDay = appointments[currentDate.format('YYYY-MM-DD')]; // Access appointments by formatted date
+            return appointmentsForDay && appointmentsForDay.length > 0; // Check if appointments exist for this date
           };
+          
+           
           return (
             <DateBox
               key={i + 1}
@@ -111,11 +143,13 @@ export const loader =
               gridColumn={monthYear.firstDOW + 1}
               monthYear={monthYear}
               hasAppointment={hasAppointment} // Pass appointment information
-              appointments={appointments[i+1]}
-          
-               appointment={appointments.find(appointment => dayjs(appointment.date).isSame(currentDate, 'day'))}
-            >
+              // appointments={appointments[i+1]}          
+              //  appointment={appointments.find(appointment => dayjs(appointment.date).isSame(currentDate, 'day'))}
+              // hasAppointment={hasAppointment(i + 1)} // Pass day or use appointments directly
+              appointments={appointments} // Pass the entire appointments object      
+           >
               {/* ... content of the DateBox component */}
+              
             </DateBox>
           );
         })}
