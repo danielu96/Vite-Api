@@ -83,7 +83,10 @@ const Todos = () => {
       </div> 
          <div> 
       <FormInput type='text' name='author'  label='author'/>        
-      </div>      
+      </div>    
+      <div> 
+      <FormInput type='text' name='date'  label='date'/>        
+      </div>    
       <div> 
       <FormInput type='email' name='email'  label='email address'/>  
       </div>     
