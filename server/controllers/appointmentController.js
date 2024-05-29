@@ -50,21 +50,14 @@ export const getAllAppointments= async (req,res)=>{
 //   return res.status(StatusCodes.OK).json({ appointment });
 // };
 export const getAppointment = async (req, res) => {
-  const { date } = req.params;
-
-  // Replace this with your logic to find appointments by date
-  // This example assumes you have a function `findAppointmentsByDate`
-  // that retrieves appointments based on the date
+  const { date } = req.params;  
   const appointments = await findAppointmentsByDate(date);
-
   let appointment = null;
-
   // Check if any appointments exist for the date
   if (appointments && appointments.length > 0) {
     // If appointments exist, pick the first one (modify logic if needed)
     appointment = appointments[0];
   }
-
   // Return a consistent response structure:
   return res.status(StatusCodes.OK).json({
     appointment, // Include the found appointment or null

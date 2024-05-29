@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import customFetch from './utils';
+import { customVisitFetch } from './utils';
 import { nanoid } from 'nanoid';
 import { toast } from 'react-toastify';
 import { newsletterFetch } from '../UTILS/axios';
@@ -41,6 +42,22 @@ export const useCreateTask = () => {
   });
   return { createTask, isLoading };
 };
+export const useCreateVisit = () => {
+  const queryClient = useQueryClient();
+  const { mutate: createVisit, isLoading } = useMutation({
+    mutationFn:  ({title,date}) => customVisitFetch.post(`/ ${ title},${date }`),
+    onSuccess: () => {
+      // queryClient.invalidateQueries({ queryKey: ['tasks'] });
+      queryClient.removeQueries(['visits']);  
+      toast.success(response?.data?.msg);
+    },
+    onError: (error) => {
+      toast.error(error.response.data.msg);
+    },
+  });
+  return { createVisit, isLoading };
+};
+
 // const {mutate:createTask}=useMutation({
 //   mutationFn:()=> customFetch.post('/', 
 //   {title:title,autor:autor,id:nanoid(),

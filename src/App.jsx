@@ -34,11 +34,13 @@ import {loader as StatLoader} from './Pages/Stat';
 import {loader as newsletterLoader} from './Components/NewsletterList';
 import {loader as AppointmentLoader} from './Pages/RESERVATION/Appointment'
 import {loader as AppointmentDetailLoader} from './Pages/RESERVATION/AppointmentDetail'
+import {loader as VisitLoader} from './Pages/VISITS/visit'
 
 //--------------Actions----------------------------
 import {action as UsersAction} from "./Pages/register";
 import {action as newsletterAction} from './Pages/Newsletter'
 import {action as tasksAction} from './Pages/Todos'
+import {action as visitsAction} from './Pages/VISITS/visit'
 
 //----------------------------------------------------------
 
@@ -101,7 +103,8 @@ const router = createBrowserRouter([
         path:'visits',
         element:<Visit/>,
         errorElement: <ErrorElement/>  ,
-        //  loader:AppointmentLoader(queryClient)   ,     
+         loader:VisitLoader(queryClient)   ,  
+         action:visitsAction(queryClient),   
       }, 
       {
         path:'users',

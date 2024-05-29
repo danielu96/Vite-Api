@@ -14,6 +14,7 @@ import newsletterRouter from './routes/newsletterRouter.js';
 import userRouter from './routes/userRouter.js'
 import jobsRouter from './routes/jobsRouter.js'
 import appointmentRouter from './routes/appointmentRouter.js'
+import visitRouter from './routes/visitRouter.js'
 
 
 import fs from 'fs/promises';
@@ -68,6 +69,10 @@ app.use('/api/newsletter',newsletterRouter);
 
 app.use('/api/appointments',appointmentRouter);
 
+//------------VISITS----------------------------
+
+app.use('/api/visits',visitRouter);
+
 
 
 //----------------- TASKS -----------------------------
@@ -89,11 +94,12 @@ app.post('/api/tasks', async (req, res) => {
   const { title } = req.body;
   const { author } = req.body;
   const { email } = req.body;
-  if (!title && !author && !email) {
+  const { date } = req.body;
+  if (!title && !author && !email && !date) {
     res.status(400).json({ msg: 'please provide value' });
     return;
   }
-  const newTask = { id: nanoid(), title,author,email, isDone: false };
+  const newTask = { id: nanoid(), title,author,email,date, isDone: false };
   taskList = [...taskList, newTask];
   await writeTasksToFile(taskList);
   res.json({ task: newTask , msg: 'sent successfully'});

@@ -1,11 +1,8 @@
 import {Router} from 'express';
-import { getCalendar } from './controllers/visitController';
-
-
-
-
-
+import { getVisit, createReservation, getAllVisits } from '../controllers/visitController.js';
 
 const router = Router();  
-router.get('/visits/:year/:month',getCalendar)
+router.get('/',getAllVisits)
+router.get('/:year/:month/:day',getVisit );
+router.post('/',createReservation)
 export default router;

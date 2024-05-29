@@ -5,7 +5,7 @@ import moment from 'moment';
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 async function fetchJobs() {
-  const response = await fetch('http://localhost:5000/api/jobs/reservation');
+  const response = await fetch('http://localhost:5000/api/jobs/');
   return response.json();
 }
 
@@ -18,7 +18,7 @@ const Calendar = () => {
   const { isLoading, error, data: fetchedJobs } = useQuery(
     ["jobs", date.format('YYYY-MM-DD')], // Unique query key based on date
     fetchJobs.bind(null, date), // Bind date to fetchJobs
-    console.log(jobs.jobs),
+    console.log(jobs),
     {
       // Optional query options
       staleTime: 200, // Cache fetched data for 200ms
