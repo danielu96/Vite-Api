@@ -17,7 +17,6 @@ import {
 import Item from './Item';
 import Error from "./Error";
 import CoctailList from "./Components/CoctailList";
-import { ToastContainer } from 'react-toastify';
 import { NewUser } from "./Pages/USERS/NewUser";
 import ErrorElement from "./Components/ErrorElement";
 
@@ -37,10 +36,12 @@ import {loader as AppointmentDetailLoader} from './Pages/RESERVATION/Appointment
 import {loader as VisitLoader} from './Pages/VISITS/visit'
 
 //--------------Actions----------------------------
-import {action as UsersAction} from "./Pages/register";
+import {action as registerAction} from "./Pages/register";
 import {action as newsletterAction} from './Pages/Newsletter'
 import {action as tasksAction} from './Pages/Todos'
 import {action as visitsAction} from './Pages/VISITS/visit'
+import {action as loginAction} from './Pages/login'
+import { store } from './store';
 
 //----------------------------------------------------------
 
@@ -86,7 +87,7 @@ const router = createBrowserRouter([
       }, 
       {
        
-         path:"/appointments/:id" ,
+         path:"appointments/:id" ,
         element:<AppointmentDetail 
         // selectedDate={selectedDate}
          /> ,      
@@ -119,16 +120,7 @@ const router = createBrowserRouter([
         errorElement: <ErrorElement/>,
            loader:SingleUserLoader(queryClient), 
         
-      },
-      {
-        path:'login',
-        element:<Login/>,
-      },
-      {
-        path:'register',
-        element:<Register/>,
-        action:UsersAction
-      },     
+      },         
       {
         path:'Item/:title',
         element: <Item/>  ,
@@ -184,7 +176,19 @@ const router = createBrowserRouter([
      
     ]
   },
-  <ToastContainer position='top-center' />
+  {
+    path:'/login',
+    element:<Login/>,
+    action: loginAction(store),
+    errorElement: ErrorElement
+  },
+  {
+    path:'/register',
+    element:<Register/>,
+    action:registerAction,
+    errorElement: ErrorElement
+  }, 
+
  
 ]) ;
  
