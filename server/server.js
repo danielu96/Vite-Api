@@ -11,6 +11,7 @@ const app = express();
 
 import  userList  from '../src/Mocks/mockData.js';
 import newsletterRouter from './routes/newsletterRouter.js';
+import authRouter from './routes/authRouter.js';
 import userRouter from './routes/userRouter.js'
 import jobsRouter from './routes/jobsRouter.js'
 import appointmentRouter from './routes/appointmentRouter.js'
@@ -61,6 +62,10 @@ app.use(bearerToken({
   reqKey: 'token',
   cookie: false, // by default is disabled
 }));
+
+app.use('/api/auth',authRouter);
+
+
 //------------------NEWSLETTER------------------------
 
 app.use('/api/newsletter',newsletterRouter);

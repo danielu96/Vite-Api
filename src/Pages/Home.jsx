@@ -1,13 +1,13 @@
 import React from 'react'
 import { Outlet, useNavigation } from 'react-router-dom'
 // import Wrapper from '../assets/wrappers/App'
-import {Loading, Navbar} from '../Components';
+import {Header, Loading, Navbar} from '../Components';
 const Home = () => {
   const navigation = useNavigation();
   const isPageLoading = navigation.state === 'loading';
   return (
     <>
-  
+  <Header/>
 <Navbar/>
 {isPageLoading ? (
         <Loading />
