@@ -1,117 +1,53 @@
-import React from 'react';
-import {  useState } from 'react';
-import Wrapper from '../assets/wrappers/App';
-import { ToastContainer } from 'react-toastify';
-import { Link,Form,useNavigation,redirect  } from 'react-router-dom';
-import axios from 'axios';
+import { FormInput, SubmitBtn } from '../components';
+import { Form, Link,redirect } from 'react-router-dom';
+import { usersFetch } from '../UTILS/axios';
 import { toast } from 'react-toastify';
-
-const UsersUrl = 'http://localhost:5000/api/users';
-
 export const action = async ({ request }) => {
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
-
   try {
-    const response = await axios.post(UsersUrl, data);
-
-    toast.success(response.data.msg);
-    return redirect('/users');
+    const response = await usersFetch.post('/auth/register', data);
+    toast.success('account created successfully');
+    return redirect('/login');
   } catch (error) {
-    console.log(error);
-    toast.error(error?.response?.data?.msg);
-    return error;
+    const errorMessage =
+      error?.response?.data?.msg 
+      // || 'please double check your credentials'
+      ;
+
+    toast.error(errorMessage);
+    return null;
   }
 };
 
-
-
-
-// const initialState= {
-//   name:'',
-//   email:'',
-//   password:'',
-//   isMember:true,
-// };
-
-
 const Register = () => {
-  const navigation = useNavigation();
-  const isSubmitting = navigation.state === 'submitting';
-  // const [values,setValues]=useState(initialState);
-    // const [name , setName] = useState('');      
-    // const [email , setEmail] = useState('');  
-    // const [password , setPassword] = useState('');  
-    // const [confirmPassword , setConfirmPassword] = useState('');  
-
-    // const handleChange = (e)=> {
-    //   const name= e.target.name;
-    //   const value= e.target.value;
-    // }
-
-    // const handleSubmit = async (e) =>{
-    //     e.preventDefault(); 
-    //     createTask(name && email, {
-    //       onSuccess: () => {
-    //         setName('');
-    //         setEmail('');
-    //       },
-    //     });
-    // }
   return (
-    <>
-    <Wrapper>      
-    <ToastContainer 
-     position="top-center"
-     />
-    <div className='container'>
-        <h3>Register</h3>
-    <Form method='POST'style={{display:'grid',alignContent:'center', justifyContent:'center'}}
-    // onSubmit={(e)=>setTitle( e.target.value)}
-    >
-          <label style={{margin:'auto auto 7px 0px'}} htmlFor='title'>Name</label>     
-      <input 
-      style={{height:"1.3rem",background:'#f7f7f7',borderRadius:"5px",border:"none",marginBottom:"5px"}}
-      type='text'
-      name='name'
-      id='name'
-      // value={name}
-      // onChange={(e)=>setName( e.target.value)}
-      ></input> 
-      <label style={{height:"1.3rem",margin:'auto auto 1px 1px '}} htmlFor='title'>Email</label>     
-      <input 
-      style={{height:"1.3rem",background:'#f7f7f7',borderRadius:"5px",border:"none",marginBottom:"5px"}}
-      type='email'
-      name='email'
-      id='email'
-      // value={email}
-      // onChange={(e)=>setEmail( e.target.value)}
-      ></input> 
-       <label style={{margin:'auto auto 7px 0px'}} htmlFor='autor'>Password</label>
-     <input 
-      style={{height:"1.3rem",background:'#f7f7f7',borderRadius:"5px",border:"none",marginBottom:"5px"}}
-      type='password'
-      name='password'
-      id='password'
-      // value={password}
-      // onChange={(e)=>setPassword( e.target.value)}
-      ></input>   
-       {/* <label style={{margin:'auto auto 7px 0px'}} htmlFor='autor'>Confirm Password</label>
-     <input 
-      style={{height:"1.3rem",background:'#f7f7f7',borderRadius:"5px",border:"none"}}
-      type='password'
-      id='confirmPassword'
-      value={confirmPassword}
-      onChange={(e)=>setConfirmPassword( e.target.value)}
-      ></input>            */}
-   <button type='submit' disabled={isSubmitting}> {isSubmitting ? 'submitting' : 'submit'}</button>
-  <div style={{marginTop:"1rem"}}> Already have an acount? <Link to={'/login'}>Login Here</Link></div>
-     </Form>      
-    </div>    
-   
-    </Wrapper>
-    </>
-  )
-}
+    <section className='h-screen grid place-items-center'>
+      <Form
+        method='POST'
+        className='card w-96 p-7 bg-base-100 shadow-lg flex flex-col gap-y-2'
+      >
+        <h4 className='text-center text-3xl font-bold'>Register</h4>
+        <FormInput type='text' label='username' name='name' />
+        <FormInput type='text' label='lastName' name='lastName' />
+        <FormInput type='text' label='address' name='location' />
+        <FormInput type='email' label='email' name='email' />
+        <FormInput type='password' label='password' name='password' />
+        <div className='mt-4'>
+          <SubmitBtn text='register' />
+        </div>
 
-export default Register
+        <p className='text-center'>
+          Already a member?
+          <Link
+            to='/login'
+            className='ml-2 link link-hover link-primary capitalize'
+          >
+            login
+          </Link>
+        </p>
+      </Form>
+    </section>
+  );
+};
+export default Register;
