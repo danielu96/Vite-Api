@@ -5,7 +5,7 @@ import cors from 'cors';
 import { nanoid } from 'nanoid';
 import mongoose from "mongoose";
 import morgan from 'morgan';
-import bearerToken from 'express-bearer-token';
+// import bearerToken from 'express-bearer-token';
 
 const app = express();
 
@@ -55,13 +55,13 @@ if (process.env.NODE_ENV !== 'production') {
 }
 app.use(cors());
 app.use(express.json());
-app.use(bearerToken({
-  bodyKey: 'access_token',
-  queryKey: 'access_token',
-  headerKey: 'Bearer',
-  reqKey: 'token',
-  cookie: false, // by default is disabled
-}));
+// app.use(bearerToken({
+//   bodyKey: 'access_token',
+//   queryKey: 'access_token',
+//   headerKey: 'Bearer',
+//   reqKey: 'token',
+//   cookie: false, // by default is disabled
+// }));
 
 app.use('/api/auth',authRouter);
 
