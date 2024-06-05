@@ -35,7 +35,10 @@ const Header = () => {
         <div className='flex gap-x-6 justify-center items-center mr-4'>
           <Link to='/login' className='link link-hover text-xs sm:text-sm'>
             Sign in / Guest
-          </Link>       
+          </Link>  
+          <Link to='/register' className='link link-hover text-xs sm:text-sm'>
+            Create an Account
+          </Link>     
         </div>
       )}
     </div>

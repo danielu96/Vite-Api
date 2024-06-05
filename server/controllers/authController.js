@@ -4,48 +4,58 @@ import { comparePassword,hashPassword } from "../utils/passwordUtils.js";
 import { UnauthenticatedError } from "../errors/customErrors.js";
 import { createJWT } from "../utils/tokenUtils.js";
 
-export const register = async (req, res) => {
-  const hashedPassword = await hashPassword(req.body.password);
-  req.body.password = hashedPassword;
-
-  const user = await User.findOne({ email: req.body.email });
-
-  if (user) {
-    res.status(StatusCodes.BAD_REQUEST).json({
-      msg: 'Użytkownik o podanym adresie e-mail już istnieje.',
-    });
-    return;
-  }
-
-  const verificationToken = generateVerificationToken(); // Generuj token weryfikacyjny
-
-  try {
-    await sendVerificationEmail({
-      name: req.body.name,
-      email: req.body.email,
-      verificationToken,
-    });
-
-    const createdUser = await User.create(req.body);
-
-    res.status(StatusCodes.CREATED).json({
-      user: createdUser,
-      msg: 'Sukces! Sprawdź swoją skrzynkę e-mail, aby zweryfikować konto',
-    });
-  } catch (error) {
-    console.error('Błąd podczas rejestracji użytkownika:', error);
-
-    if (error.code === 11000) { // Kod błędu duplikatu klucza
-      res.status(StatusCodes.BAD_REQUEST).json({
-        msg: 'Użytkownik o podanym adresie e-mail już istnieje.',
-      });
-    } else {
-      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        msg: 'Wystąpił błąd podczas rejestracji. Spróbuj ponownie później.',
-      });
-    }
-  }
+export const register = async (req,res)=>{
+  const hashedPassword= await hashPassword(req.body.password) ;
+  req.body.password= hashedPassword;
+   
+    const user=await User.create(req.body);
+    res.status(StatusCodes.CREATED).json({user});
 };
+
+
+
+// export const register = async (req, res) => {
+//   const hashedPassword = await hashPassword(req.body.password);
+//   req.body.password = hashedPassword;
+
+//   const user = await User.findOne({ email: req.body.email });
+
+//   if (user) {
+//     res.status(StatusCodes.BAD_REQUEST).json({
+//       msg: 'Użytkownik o podanym adresie e-mail już istnieje.',
+//     });
+//     return;
+//   }
+
+//   const verificationToken = generateVerificationToken(); // Generuj token weryfikacyjny
+
+//   try {
+//     await sendVerificationEmail({
+//       name: req.body.name,
+//       email: req.body.email,
+//       verificationToken,
+//     });
+
+//     const createdUser = await User.create(req.body);
+
+//     res.status(StatusCodes.CREATED).json({
+//       user: createdUser,
+//       msg: 'Sukces! Sprawdź swoją skrzynkę e-mail, aby zweryfikować konto',
+//     });
+//   } catch (error) {
+//     console.error('Błąd podczas rejestracji użytkownika:', error);
+
+//     if (error.code === 11000) { // Kod błędu duplikatu klucza
+//       res.status(StatusCodes.BAD_REQUEST).json({
+//         msg: 'Użytkownik o podanym adresie e-mail już istnieje.',
+//       });
+//     } else {
+//       res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+//         msg: 'Wystąpił błąd podczas rejestracji. Spróbuj ponownie później.',
+//       });
+//     }
+//   }
+// };
 
 export const login = async (req,res)=>{
   const user = await User.findOne({email:req.body.identifier});
