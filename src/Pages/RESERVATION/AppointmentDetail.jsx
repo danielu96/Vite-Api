@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLoaderData } from 'react-router-dom';
+import { Link , useLoaderData } from 'react-router-dom';
 import dayjs from 'dayjs';
 import advancedFormat from 'dayjs/plugin/advancedFormat';
 import { appointmentsFetch } from '../../UTILS/axios';
@@ -55,6 +55,7 @@ console.log(appointment)
         );
       })} 
                 </div>
+                <Link to={'/appointments'}>back</Link>
             </section>
         </>
     );
