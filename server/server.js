@@ -5,6 +5,7 @@ import cors from 'cors';
 import { nanoid } from 'nanoid';
 import mongoose from "mongoose";
 import morgan from 'morgan';
+import cookieParser from 'cookie-parser';
 // import bearerToken from 'express-bearer-token';
 
 const app = express();
@@ -16,7 +17,11 @@ import userRouter from './routes/userRouter.js'
 import jobsRouter from './routes/jobsRouter.js'
 import appointmentRouter from './routes/appointmentRouter.js'
 import visitRouter from './routes/visitRouter.js'
+import ExpressMongoSanitize from "express-mongo-sanitize";
 
+
+import {authenticateUser} from '../server/middleware/authMiddleware.js'
+import errorHandlerMiddleware from '../server/middleware/errorHandlerMiddleware.js';
 
 import fs from 'fs/promises';
 import path, { dirname } from 'path';
@@ -47,14 +52,16 @@ const writeTasksToFile = async (tasks) => {
 
 let taskList = await readTasksFromFile();
 
-import  jwt  from 'jsonwebtoken';
+// import  jwt  from 'jsonwebtoken';
 
 
 if (process.env.NODE_ENV !== 'production') {
   app.use(morgan('dev'));
 }
 app.use(cors());
+app.use(cookieParser());
 app.use(express.json());
+app.use (ExpressMongoSanitize());
 // app.use(bearerToken({
 //   bodyKey: 'access_token',
 //   queryKey: 'access_token',
@@ -129,7 +136,7 @@ app.delete('/api/tasks/:id', async (req, res) => {
   res.json({ msg: 'task removed' });
 });
 // ------------------USERS -----------------------------
-app.use('/api/users',userRouter);
+app.use('/api/users', userRouter);
 
 
 app.post('/api/users', (req, res) => {
@@ -212,7 +219,7 @@ app.use('/api/jobs',jobsRouter);
 //----------------------------------------------------------------------------
 
 app.use((req, res) => res.status(404).send('Route does not exist'));
-
+app.use(errorHandlerMiddleware);
 const port = process.env.PORT || 5000;
 
 try {
