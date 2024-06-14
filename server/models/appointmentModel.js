@@ -6,7 +6,15 @@ const AppointmentSchema = new mongoose.Schema({
          }  ,
          date:{
             type: Date,
-        },   
+        },  
+        time:{
+          type: String,
+      }, 
+      createdBy: {
+        type: mongoose.Types.ObjectId,
+        ref: 'User',
+        // required: true,
+      }, 
 },
 
 { timestamps: true }
