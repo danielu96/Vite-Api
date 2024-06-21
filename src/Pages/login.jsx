@@ -4,6 +4,7 @@ import { usersFetch } from '../UTILS/axios';
 import { toast } from 'react-toastify';
 import { loginUser } from '../features/user/userSlice';
 import { useDispatch } from 'react-redux';
+import { customFetch } from '../UTILS/axios';
 
 
 
@@ -13,7 +14,7 @@ export const action =
     const formData = await request.formData();
     const data = Object.fromEntries(formData);
     try {
-      const response = await usersFetch.post('/auth/login', data);
+      const response = await customFetch.post('/auth/login', data);
 
       store.dispatch(loginUser(response.data));
       toast.success(response?.data?.msg);
@@ -34,7 +35,7 @@ const Login = () => {
   const navigate = useNavigate();
   const loginAsGuestUser = async () => {
     try {
-      const response = await usersFetch.post('/auth/testUser', {       
+      const response = await customFetch.post('/auth/testUser', {       
         identifier: 'demo@dem.dm',
         password: '12345678',
       });
