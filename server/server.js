@@ -6,6 +6,7 @@ import { nanoid } from 'nanoid';
 import mongoose from "mongoose";
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
+import helmet from 'helmet';
 // import bearerToken from 'express-bearer-token';
 
 const app = express();
@@ -20,8 +21,11 @@ import visitRouter from './routes/visitRouter.js'
 import ExpressMongoSanitize from "express-mongo-sanitize";
 
 
-import {authenticateUser} from '../server/middleware/authMiddleware.js'
+
 import errorHandlerMiddleware from '../server/middleware/errorHandlerMiddleware.js';
+import {authenticateUser} from '../server/middleware/authMiddleware.js';
+
+
 
 import fs from 'fs/promises';
 import path, { dirname } from 'path';
@@ -61,6 +65,7 @@ if (process.env.NODE_ENV !== 'production') {
 app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
+app.use (helmet());
 app.use (ExpressMongoSanitize());
 // app.use(bearerToken({
 //   bodyKey: 'access_token',
@@ -70,12 +75,12 @@ app.use (ExpressMongoSanitize());
 //   cookie: false, // by default is disabled
 // }));
 
-app.use('/api/auth',authRouter);
+app.use('/api/v1/auth',authRouter);
 
 
 //------------------NEWSLETTER------------------------
 
-app.use('/api/newsletter',newsletterRouter);
+app.use('/api/v1/newsletter', authenticateUser, newsletterRouter);
 
 //------------APPOINTMENTS----------------------------
 
