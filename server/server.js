@@ -84,7 +84,7 @@ app.use('/api/v1/newsletter', authenticateUser, newsletterRouter);
 
 //------------APPOINTMENTS----------------------------
 
-app.use('/api/appointments',appointmentRouter);
+app.use('/api/v1/appointments',authenticateUser, appointmentRouter);
 
 //------------VISITS----------------------------
 
