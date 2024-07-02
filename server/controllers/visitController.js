@@ -18,7 +18,7 @@ async function readAppointmentsData() {
     // Handle error gracefully (e.g., return empty array)
     return [];
   }
-}
+};
 
 export const writeAppointmentsData = async (data) => {
   try {
@@ -30,35 +30,11 @@ export const writeAppointmentsData = async (data) => {
   }
 };
 
-
-
 export const getAllVisits = async (req, res) => {
   let data = await readAppointmentsData();
   // await readAppointmentsData(data);
   res.json({ data });
 };
-
-
-
-// export const getAllVisits= async (req,res)=>{       
-//   let queryObject= {  
-//     // createdBy : req.user.userId      
-//         } ;
-  
-//   let result = Visit.find(queryObject)
-//   result=result.sort('-createdAt');
-//   const totalVisits = await Visit.countDocuments(queryObject) ;
-//   let data = await result   
-//     res.status(200).json({data,totalVisits});
-//   };
-
-
-// export const getCalendar = async (req,res)=> {
-//     const { year, month, day,name } = req.params;   
-    
-//     const visits = await Visit(year, month, day , req.params.name );
-//         res.status(StatusCodes.OK).json({visits, name});  
-//   };
 
   export const createVisit= async (req,res)=> {  
     // req.body.createdBy = req.user.userId;     
@@ -103,32 +79,7 @@ export const getAllVisits = async (req, res) => {
     }
   };
 
-  // export const createReservation = async (req, res) => {
-  //   const { author } = req.body;
-  //   const { date } = req.body;
-  //   const { time } = req.body;
-  
-  //   if (!author || !date || !time) {
-  //     res.status(400).json({ msg: 'Please provide all details (author, date, time).' });
-  //     return;
-  //   }
-  //   const appointments = await readAppointmentsData();
-  //   const existingAppointment = appointments.find(
-  //     (appointment) =>
-  //       appointment.date === date && appointment.time === time && appointment.day === dayjs(date).format('DD')
-  //   );
-  
-  //   if (existingAppointment) {
-  //     res.status(409).json({ msg: 'This time slot is already booked.' });
-  //     return;
-  //   }
-  
-  //   const newAppointment = { id: nanoid(), author, date, time, day: dayjs(date).format('DD') };
-  //   appointments = [...appointments, newAppointment];
-  //   await writeAppointmentsData(appointments);
-  //   res.json({ appointment: newAppointment, msg: 'Reservation created successfully.' });
-  // };
-  export const createReservation = async (req, res) => {
+    export const createReservation = async (req, res) => {
     const { author } = req.body;
     const { date } = req.body;
     const { time } = req.body;
@@ -155,12 +106,5 @@ export const getAllVisits = async (req, res) => {
     appointments = [...appointments, newAppointment];
     await writeAppointmentsData(appointments);
     res.json({ appointment: newAppointment, msg: 'Reservation created successfully.' });
-  };
-    
-  
-
-
-
-
-  
+  };    
   
