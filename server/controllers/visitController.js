@@ -6,29 +6,7 @@ import { nanoid } from "nanoid";
 // Assuming jobs.json is a JSON file containing appointment data
 import fs from 'fs/promises'; // For asynchronous file I/O
 
-// export const readAppointmentsData = async ()=> {
-//   try {
-//     const data = await fs.readFile('tasks.json', 'utf-8');
-//     console.log(data)
-//     return JSON.parse(data);
-//   } catch (error) {
-//     console.error('Error reading appointments data:', error);
-//     throw error; // Re-throw the error to be caught by the getVisit handler
-//   }
-// }
 
-// async function readAppointmentsData() {
-//   try {
-//     const data = await fs.readFile('tasks.json', 'utf-8');
-//     const appointments = JSON.parse(data);
-//     console.log(data)
-//     return appointments; // Assuming appointments is an array in the file
-//   } catch (error) {
-//     console.error('Error reading appointments data:', error);
-//     // Handle error gracefully (e.g., return empty array)
-//     return [];
-//   }
-// }
 async function readAppointmentsData() {
   try {
     const data = await fs.readFile('tasks.json', 'utf-8');
@@ -42,26 +20,6 @@ async function readAppointmentsData() {
   }
 }
 
-
-
-// export const writeAppointmentsData = async (data) => {
-//   try {
-//     const jsonData = JSON.stringify(data, null, 2); // Stringify data with indentation
-//     await fs.writeFile('tasks.json', jsonData, 'utf-8');
-//     console.log('Appointments data written successfully!');
-//   } catch (error) {
-//     console.error('Error writing appointments data:', error);
-//   }
-// }
-// export const writeAppointmentsData = async (data) => {
-//   try {
-//     const jsonData = JSON.stringify(data, null, 2); // Stringify data with indentation
-//     await fs.promises.writeFile('tasks.json', jsonData, 'utf-8');
-//     console.log('Appointments data written successfully!');
-//   } catch (error) {
-//     console.error('Error writing appointments data:', error);
-//   }
-// };
 export const writeAppointmentsData = async (data) => {
   try {
     const jsonData = JSON.stringify(data, null, 2); // Stringify data with indentation
