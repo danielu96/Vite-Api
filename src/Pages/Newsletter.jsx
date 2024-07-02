@@ -7,27 +7,11 @@ import { toast } from 'react-toastify';
 import NewsletterList from '../Components/NewsletterList'
 
 
-// export const newsletterQuery = (params,user) => {
-//   return {
-//     queryKey: [
-//       'newsletter',
-//       user.name,    
-//     ],
-//     queryFn: () =>
-//     newsletterFetch.get('/', {
-//         params  ,
-//         headers: {          
-//           Authorization: `Bearer ${user.token}`,          
-//         },            
-//       }),      
-//   };  
-// };
-
-export const newsletterQuery = ( user) => {
+export const newsletterQuery = (user) => {
   return {
     queryKey: [
       'newsletter',
-      user.name,
+      user.name, 
       // params.page ? parseInt(params.page) : 1,    
     ],
     queryFn: () =>
