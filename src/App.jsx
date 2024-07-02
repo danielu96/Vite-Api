@@ -32,7 +32,7 @@ import {loader as LocalLoader} from'./Pages/Todos';
 import {loader as UserLoader} from'./Pages/Users';
 import {loader as SingleTasksLoader} from './Pages/ToDo';
 import {loader as StatLoader} from './Pages/Stat';
-import {loader as newsletterLoader} from './Components/NewsletterList';
+import {loader as newsletterLoader} from './Pages/Newsletter';
 // import {loader as AppointmentLoader} from './Pages/RESERVATION/Appointments'
 import {loader as AppointmentDetailLoader} from './Pages/RESERVATION/AppointmentDetail'
 import {loader as VisitLoader} from './Pages/VISITS/visit'
@@ -42,6 +42,7 @@ import { action as registerAction } from './Pages/register'
 import {action as newsletterAction} from './Pages/Newsletter'
 import {action as tasksAction} from './Pages/Todos'
 import {action as visitsAction} from './Pages/VISITS/visit'
+import {action as appointmentAction} from './Pages/RESERVATION/AppointmentDetail'
 import {action as loginAction} from './Pages/login'
 import { store } from './store';
 
@@ -51,6 +52,7 @@ import { createBrowserRouter ,RouterProvider} from "react-router-dom";
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'; 
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import Appointments from './Pages/RESERVATION/Appointments';
+// import {AppointmentDetail} from './Pages/RESERVATION/AppointmentDetail.jsx';
 import AppointmentDetail from './Pages/RESERVATION/AppointmentDetail';
 // import NoAppointment from './Pages/RESERVATION/NoAppointment';
 import  Visit  from './Pages/VISITS/visit';
@@ -92,7 +94,8 @@ const router = createBrowserRouter([
          path:'appointments/:year/:month/:day' ,
         element:<AppointmentDetail /> ,      
         errorElement: <ErrorElement/>,
-           loader:AppointmentDetailLoader(queryClient), 
+           loader:AppointmentDetailLoader(store,queryClient), 
+           action:appointmentAction(store, queryClient), 
         
       },
       // {
@@ -168,8 +171,9 @@ const router = createBrowserRouter([
         path:'Newsletter',
         element:<Newsletter/>,
         errorElement: <ErrorElement/>, 
-        action:newsletterAction(queryClient),
-        loader:newsletterLoader(queryClient),     
+        loader:newsletterLoader(store,queryClient), 
+        action:newsletterAction(store,queryClient),
+            
        
       },
       {
