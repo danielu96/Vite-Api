@@ -1,39 +1,83 @@
 import React from 'react';
 import { redirect,Form } from 'react-router-dom';
 import  {FormInput,SubmitBtn} from '../Components';
-import { newsletterFetch } from '../UTILS/axios';
+// import { customFetch } from '../UTILS/customFetch.jsx';
+import { customFetch } from '../UTILS/axios';
 import { toast } from 'react-toastify';
 import NewsletterList from '../Components/NewsletterList'
 
 
-export const newsletterQuery = (params) => {
+export const newsletterQuery = (user) => {
   return {
     queryKey: [
       'newsletter',
-            
+      user.name, 
+      // params.page ? parseInt(params.page) : 1,    
     ],
     queryFn: () =>
-    newsletterFetch.get('/', {
-        params           
+      customFetch.get('/newsletter', {
+        // params,        
+        headers: {          
+          Authorization: `Bearer ${user.token}`,          
+        },        
       }),      
   };  
 };
 
 
+
+export const loader =
+  (store, queryClient) =>
+  async ({ request }) => {
+    const user = store.getState().userState.user;
+
+    if (!user) {
+      toast.warn('You must be logged in to view newsletter');
+      return redirect('/login');
+    }
+    // const params = Object.fromEntries([
+    //   ...new URL(request.url).searchParams.entries(),
+    // ]);
+    try {
+      const response = await queryClient.ensureQueryData(
+        newsletterQuery( user)
+      );
+
+      return {
+        data: response.data,
+        totalMessages:response.data.totalMessages    
+      
+      };
+    } catch (error) {
+      console.log(error);
+      const errorMessage =
+        error?.response?.data?.error?.message ||
+        'there was an error accessing your newsletter';
+
+      toast.error(errorMessage);
+      if (error?.response?.status === 401 || 403) return redirect('/login');
+      return null;
+    }
+  };
+
+
+
+
+
 export const action =
-  (queryClient) =>
+  (store , queryClient) =>
   async ({ request }) => {    
+    const user = store.getState().userState.user;
     const formData = await request.formData();
     const {email} = Object.fromEntries(formData);    
     try {
-      const response = await newsletterFetch.post(
-        '/', {email}           
+      const response = await customFetch.post(
+        '/newsletter', {email}           
       )    
       console.log(response);   
       queryClient.removeQueries(['newsletter'])
       // queryClient.invalidateQueries({ queryKey: ['newsletter'] });   
-      toast.success('we have your mail now'); 
-    
+      toast.success('we have your mail now');     
       return redirect('/Newsletter');
     }     
  catch (error) {

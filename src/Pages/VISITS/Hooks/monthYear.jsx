@@ -21,7 +21,6 @@ function getUpdatedMonthYear(monthYear, monthIncrement) {
   return monthYear.startDate.clone().add(monthIncrement, 'months');
 }
 
-
 function getMonthYearDetails(initialDate) {
   const month = initialDate.format('MM');
   const year = initialDate.format('YYYY');
@@ -31,20 +30,21 @@ function getMonthYearDetails(initialDate) {
   const monthName = startDate.format('MMMM');
 
   const days = [];
+  const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']; // Array of day names
+
   for (let i = 1; i <= lastDate; i++) {
     const day = startDate.clone().add(i - 1, 'days'); // Create Dayjs object for each day
+    const dayOfWeekIndex = day.day(); // Get the day of the week index (0-6)
+
     days.push({
       date: day.date(), // Day of the month
-      // isCurrent: day.isSame(dayjs(), 'day'), // Check if current day
+      dayName: dayNames[dayOfWeekIndex], // Day name based on index
       // ... other day properties
     });
   }
 
   return new MonthYear(startDate, firstDOW, lastDate, monthName, month, year, days);
 }
-
-
-
 
 function getNewMonthYear(prevData, monthIncrement) {
   // update the monthYear by the specified increment
